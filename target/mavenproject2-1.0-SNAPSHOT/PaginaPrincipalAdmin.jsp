@@ -93,15 +93,17 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
                 <th scope="col">id</th>
                 <th scope="col">nombre maestro</th>
                 <th scope="col">usuario</th>
+                <th scope="col">Estatus</th>
                 <th scope="col" id="acciones">acciones</th>
               </tr>
             </thead>
-            <tbody id="tbodyid">
+            <tbody id="tbodyidMaestros">
                 <%for(Maestro maestro: listaMaestros){%>
                     <tr>
                       <th scope="row"><%= maestro.getNoEmpleado() %></th>
                       <td><%= maestro.getNombreMaestro() %></td>
                       <td><%= maestro.getUsuario() %></td>
+                      <td><%= maestro.isEstatus() %></td>
                       <td class="text-center align-middle">
                           <button type="submit"
                                   value="Eliminar"
@@ -121,17 +123,17 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
 
         <h2 class="mt-5 pt-5">Catalogo alumnos</h2>
         <div class="container-fluid mt-2 mb-5 
-            my-custom-scrollbar">
+            my-custom-scrollbar" id="divtableAlumnos">
             <table class="table table-striped 
                 table-hover table-bordered 
                 table-responsive caption-top 
                 mx-auto align-middle table-wrapper-scroll-y" id="table">
-
               <thead>
                 <tr>
                   <th scope="col">id</th>
                   <th scope="col">nombre</th>
                   <th scope="col">usuario</th>
+                  <th scope="col">Estatus</th>
                   <th scope="col" id="acciones">acciones</th>
                 </tr>
               </thead>
@@ -141,6 +143,7 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
                     <th scope="row"><%= alumno.getMatricula() %></th>
                     <td><%= alumno.getNombre() %></td>
                     <td><%= alumno.getUsuario() %></td>
+                    <td><%= alumno.isEstatus() %></td>
                     <td class="text-center align-middle">
                           <button type="submit"
                                   value="Eliminar"
@@ -160,11 +163,12 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
 
         <h2 class="mt-5 pt-5">Catalogo materias</h2>
         <div class="container-fluid mt-2 
-        my-custom-scrollbar">
+        my-custom-scrollbar" id="divtableMaterias">
           <table class="table table-striped 
               table-hover table-bordered  
               table-responsive caption-top 
-              mx-auto align-middle table-wrapper-scroll-y" id="table">
+              mx-auto align-middle
+              table-wrapper-scroll-y" id="table">
             <thead>
               <tr>
                 <th scope="col">id</th>
@@ -180,7 +184,7 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
                 <td><%= materia.getNombreMateria() %></td>
                 <td><%= materia.isEstatus() %></td>
                 <td class="text-center align-middle">
-                    <button type="submit"
+                    <button type="button"
                                   value="Eliminar"
                                   id="EliminarMateria" 
                                   class="btn btn-danger">Eliminar</button>
@@ -198,7 +202,7 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
 
         <h2 class="mt-5 pt-5 ">Catalogo grupos</h2>
         <div class="container-fluid mt-2 
-        my-custom-scrollbar mb-5 pb-5">
+        my-custom-scrollbar mb-5 pb-5" id="divtableGrupos">
           <table class="table table-striped 
               table-hover table-bordered  
               table-responsive caption-top 
@@ -384,7 +388,7 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" id="EditarMaestroSetInfo" value="EditarMaestroSetInfo"
+                    <button type="submit" id="EditarAlumnoSetInfo" value="EditarAlumnoSetInfo"
                             class="btn btn-primary">Save changes</button>
                   </div>
                 </div>

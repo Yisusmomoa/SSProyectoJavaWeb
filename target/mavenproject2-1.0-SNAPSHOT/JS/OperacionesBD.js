@@ -139,7 +139,7 @@ $(document).ready(function() {
                                                     Swal.fire({
                                                         icon: 'error',
                                                         title: 'Oops...',
-                                                        text: 'Usuario o contraseña incorrecta!'
+                                                        text: 'Eerror intenta más tarde!'
                                                       });
                                                 }
                                             },
@@ -568,7 +568,7 @@ $(document).ready(function() {
     
     /*MAESTRO*/
         //Eliminar maestro
-        $('tbody').on('click', '#EliminarMaestro',function (){
+        $('#tbodyidMaestros').on('click', '#EliminarMaestro',function (){
         let currow=$(this).closest('tr');
         let idMaestro=currow.find('th').text();
         let opcion=$('#EliminarMaestro').val();
@@ -602,6 +602,7 @@ $(document).ready(function() {
                                    showConfirmButton: false,
                                    timer: 1000
                                  });
+                                 $('#tbodyidMaestros').html(obj.listaMaestros)
                             }
                             else{
                                 Swal.fire({
@@ -698,7 +699,7 @@ $(document).ready(function() {
                               setTimeout(()=>{
                                     $("#editMaestro").modal('hide');  
                                 },1000);
-                                
+                                $('#tbodyidMaestros').html(obj.listaMaestros)
                         }
                         else{
                            Swal.fire({
@@ -750,6 +751,7 @@ $(document).ready(function() {
                           success:(data,textStatus,jqXHR)=>{
                               let obj=JSON.parse(data);
                               if (obj.status==200) {
+                                  $("#tbodyidAlumnos").html(obj.listaAlumnos);
                                     Swal.fire({
                                      position: 'center',
                                      icon: 'success',
@@ -757,6 +759,7 @@ $(document).ready(function() {
                                      showConfirmButton: false,
                                      timer: 1000
                                    });
+                                   
                                 }
                                 else{
                                     Swal.fire({
@@ -823,7 +826,7 @@ $(document).ready(function() {
                  const inputNombreAlumno=$('#inputNombreAlumno').val();
                  const inputContraseñaAlumno=$('#inputContraseñaAlumno').val();
                  const inputEstatusAlumno=$('#inputEstatusAlumno').prop('checked');
-                let opcion=$('#EditarMaestroSetInfo').val(); 
+                let opcion=$('#EditarAlumnoSetInfo').val(); 
                 debugger;
                 $.ajax({
                     type:"POST",
@@ -850,7 +853,7 @@ $(document).ready(function() {
                                   setTimeout(()=>{
                                         $("#editAlumno").modal('hide');  
                                     },1000);
-
+                                   $("#tbodyidAlumnos").html(obj.listaAlumnos);
                             }
                             else{
                                Swal.fire({
@@ -909,6 +912,7 @@ $(document).ready(function() {
                                      showConfirmButton: false,
                                      timer: 1000
                                    });
+                                   $("#tbodyidMateria").html(obj.listaMaterias);
                                 }
                                 else{
                                     Swal.fire({
@@ -930,12 +934,13 @@ $(document).ready(function() {
               });
         });
         
-        //Editar alumno
+        //Editar materia
             //get info materia
              $('#tbodyidMateria').on('click', '#EditarMateria',function(){
                 let currow=$(this).closest('tr');
                 let idMateria=currow.find('th').text();
                 let opcion=$('#EditarMateria').val();
+                debugger;
                 $.ajax({
                     type:"POST",
                     datatype:"json",
@@ -986,6 +991,7 @@ $(document).ready(function() {
                                 "opcion":opcion
                             },success:(data,textStatus,jqXHR)=>{
                                 const obj=JSON.parse(data);
+                                debugger;
                                 if (obj.status==200) {
                                     Swal.fire({
                                         position: 'center',
@@ -995,9 +1001,10 @@ $(document).ready(function() {
                                         timer: 1000
                                       });
                                       setTimeout(()=>{
-                                            $("#EditMateria").modal('hide');  
+                                            $("#EditMateria").modal('hide'); 
+                                            $("#tbodyidMateria").html(obj.listaMaterias);
                                         },1000);
-
+                                        
                                 }
                                 else{
                                    Swal.fire({
@@ -1026,7 +1033,7 @@ $(document).ready(function() {
                 }
              });
     
-        //Editar alumno
+        //Editar materia
     /*MATERIA*/
 
     /*GRUPO*/
@@ -1064,6 +1071,7 @@ $(document).ready(function() {
                                      showConfirmButton: false,
                                      timer: 1000
                                    });
+                                   $("#tbodyidGrupo").html(obj.listaGrupos);
                                 }
                                 else{
                                     Swal.fire({
@@ -1155,7 +1163,7 @@ $(document).ready(function() {
                                       setTimeout(()=>{
                                             $("#EditGrupo").modal('hide');  
                                         },1000);
-
+                                       $("#tbodyidGrupo").html(obj.listaGrupos);
                                 }
                                 else{
                                    Swal.fire({

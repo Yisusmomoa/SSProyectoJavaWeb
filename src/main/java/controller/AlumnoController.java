@@ -9,6 +9,8 @@ import dao.AlumnoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -73,7 +75,7 @@ public class AlumnoController extends HttpServlet {
         
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
-        
+        List<Alumno> listaAlumnos=new ArrayList<>();
         Alumno alumno;
         
         switch(opcion){
@@ -82,6 +84,41 @@ public class AlumnoController extends HttpServlet {
                     if (AlumnoDAO.elimimnarAlumno(Integer.parseInt(idAlumno))==1) {
                         json.put("msj", "Registro eliminado con éxito");
                         json.put("status", 200);
+                        
+                        listaAlumnos=AlumnoDAO.getAlumnos();
+                            String Tabla;
+                            Tabla="";
+                            
+                            for(Alumno alumnoAux: listaAlumnos){
+                                 Tabla=Tabla.concat("<tr>");
+
+                                   Tabla=Tabla.concat("<th scope='row'>");
+                                    Tabla=Tabla.concat(Integer.toString(alumnoAux.getMatricula()));
+                                   Tabla=Tabla.concat("</th>");
+
+                                   Tabla=Tabla.concat("<td>");
+                                    Tabla=Tabla.concat(alumnoAux.getNombre());
+                                   Tabla=Tabla.concat("</td>");
+                                   
+                                   Tabla=Tabla.concat("<td>");
+                                    Tabla=Tabla.concat(alumnoAux.getUsuario());
+                                   Tabla=Tabla.concat("</td>");
+
+                                   Tabla=Tabla.concat("<td>");
+                                    Tabla=Tabla.concat(Boolean.toString(alumnoAux.isEstatus()));
+                                   Tabla=Tabla.concat("</td>");
+
+                                   Tabla=Tabla.concat("<td class='text-center align-middle'>");
+                                    Tabla=Tabla.concat("<button type='button' value='Eliminar' id='EliminarAlumno' class='btn btn-danger'>Eliminar</button>");
+                                    Tabla=Tabla.concat("<button type='button' id='EditarAlumno' value='EditarGetInfoAlumno' data-bs-toggle='modal' data-bs-target='#editAlumno' class='btn btn-secondary'>Editar</button>");
+                                   Tabla=Tabla.concat("</td>");
+
+                                Tabla=Tabla.concat("</tr>");
+                            }
+                            Tabla=Tabla.concat("</tbody>");
+                            Tabla=Tabla.concat("</table>");
+                            json.put("listaAlumnos", Tabla);
+                        
                         out.println(json);
                     }
                     else{
@@ -116,7 +153,7 @@ public class AlumnoController extends HttpServlet {
                     
                 break;
             }
-            case "EditarMaestroSetInfo":{
+            case "EditarAlumnoSetInfo":{
                 try {
                     alumno=AlumnoDAO.getAlumnoByID(Integer.parseInt(idAlumno));
                     if (alumno!=null) {
@@ -131,8 +168,42 @@ public class AlumnoController extends HttpServlet {
                         }
                         alumno.setContraseña(inputContraseñaAlumno);
                         if (AlumnoDAO.editarAlumno(alumno)==1) {
-                             json.put("msj", "Registro editado con éxito");
+                            json.put("msj", "Registro editado con éxito");
                             json.put("status", 200);
+                            
+                            listaAlumnos=AlumnoDAO.getAlumnos();
+                            String Tabla;
+                            Tabla="";
+                            
+                            for(Alumno alumnoAux: listaAlumnos){
+                                 Tabla=Tabla.concat("<tr>");
+
+                                   Tabla=Tabla.concat("<th scope='row'>");
+                                    Tabla=Tabla.concat(Integer.toString(alumnoAux.getMatricula()));
+                                   Tabla=Tabla.concat("</th>");
+
+                                   Tabla=Tabla.concat("<td>");
+                                    Tabla=Tabla.concat(alumnoAux.getNombre());
+                                   Tabla=Tabla.concat("</td>");
+                                   
+                                   Tabla=Tabla.concat("<td>");
+                                    Tabla=Tabla.concat(alumnoAux.getUsuario());
+                                   Tabla=Tabla.concat("</td>");
+
+                                   Tabla=Tabla.concat("<td>");
+                                    Tabla=Tabla.concat(Boolean.toString(alumnoAux.isEstatus()));
+                                   Tabla=Tabla.concat("</td>");
+
+                                   Tabla=Tabla.concat("<td class='text-center align-middle'>");
+                                    Tabla=Tabla.concat("<button type='button' value='Eliminar' id='EliminarAlumno' class='btn btn-danger'>Eliminar</button>");
+                                    Tabla=Tabla.concat("<button type='button' id='EditarAlumno' value='EditarGetInfoAlumno' data-bs-toggle='modal' data-bs-target='#editAlumno' class='btn btn-secondary'>Editar</button>");
+                                   Tabla=Tabla.concat("</td>");
+
+                                Tabla=Tabla.concat("</tr>");
+                            }
+                            Tabla=Tabla.concat("</tbody>");
+                            Tabla=Tabla.concat("</table>");
+                            json.put("listaAlumnos", Tabla);
                             out.println(json);
                         }
                         else{

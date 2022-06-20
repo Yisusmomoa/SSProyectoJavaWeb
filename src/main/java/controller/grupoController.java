@@ -9,6 +9,8 @@ import dao.grupoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -72,13 +74,52 @@ public class grupoController extends HttpServlet {
         
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
-        Grupo grupo;
+        Grupo grupo=null;
+        List<Grupo> listaGrupos=new ArrayList<>();
+        String Tabla;
+        Tabla="";
         switch(opcion){
             case "Eliminar":{
                 try {
                     if (grupoDAO.eliminarGrupo(Integer.parseInt(idGrupo))==1) {
+                        listaGrupos=grupoDAO.getGrupos();
                         json.put("msj", "Registro eliminado con éxito");
                         json.put("status", 200);
+                        
+                        for(Grupo grupoAux: listaGrupos){
+                                Tabla=Tabla.concat("<tr>");
+
+                                   Tabla=Tabla.concat("<th scope='row'>");
+                                    Tabla=Tabla.concat(Integer.toString(grupoAux.getIdGrupo()));
+                                   Tabla=Tabla.concat("</th>");
+
+                                   Tabla=Tabla.concat("<td>");
+                                        Tabla=Tabla.concat(grupoAux.getMateria().getNombreMateria());
+                                   Tabla=Tabla.concat("</td>");
+                                   
+                                    Tabla=Tabla.concat("<td>");
+                                        Tabla=Tabla.concat(Integer.toString(grupoAux.getNumAlumnos()));
+                                    Tabla=Tabla.concat("</td>");
+                                   
+                                    Tabla=Tabla.concat("<td>");
+                                        Tabla=Tabla.concat(Integer.toString(grupoAux.getClaveMateriaGrupo()));
+                                    Tabla=Tabla.concat("</td>");
+
+                                    Tabla=Tabla.concat("<td>");
+                                        Tabla=Tabla.concat(Boolean.toString(grupoAux.isEstatus()));
+                                    Tabla=Tabla.concat("</td>");
+
+                                    Tabla=Tabla.concat("<td class='text-center align-middle'>");
+                                        Tabla=Tabla.concat("<button type='button' value='Eliminar' id='EliminarGrupo' class='btn btn-danger'>Eliminar</button>");
+                                        Tabla=Tabla.concat("<button type='button' id='EditarGrupo' value='EditarGetInfoGrupo' data-bs-toggle='modal' data-bs-target='#EditGrupo' class='btn btn-secondary'>Editar</button>");
+                                    Tabla=Tabla.concat("</td>");
+                                    
+                                Tabla=Tabla.concat("</tr>");
+                            }
+                            Tabla=Tabla.concat("</tbody>");
+                            Tabla=Tabla.concat("</table>");
+                            json.put("listaGrupos", Tabla);
+                        
                         out.println(json);
                     }
                     else{
@@ -100,6 +141,7 @@ public class grupoController extends HttpServlet {
                         String grupoJsonString = new Gson().toJson(grupo);
                         json.put("Grupo", grupoJsonString);
                         json.put("status", 200);
+                        
                         out.println(json);
                     }
                     else{
@@ -126,8 +168,46 @@ public class grupoController extends HttpServlet {
                             grupo.setEstatus(Boolean.parseBoolean(inputEstatusGrupo));
                         }
                         if (grupoDAO.editarGrupo(grupo)==1) {
+                            listaGrupos=grupoDAO.getGrupos();
+                            
                             json.put("msj", "Registro editado con éxito");
                             json.put("status", 200);
+                            
+                            for(Grupo grupoAux: listaGrupos){
+                                Tabla=Tabla.concat("<tr>");
+
+                                   Tabla=Tabla.concat("<th scope='row'>");
+                                    Tabla=Tabla.concat(Integer.toString(grupoAux.getIdGrupo()));
+                                   Tabla=Tabla.concat("</th>");
+
+                                   Tabla=Tabla.concat("<td>");
+                                        Tabla=Tabla.concat(grupoAux.getMateria().getNombreMateria());
+                                   Tabla=Tabla.concat("</td>");
+                                   
+                                    Tabla=Tabla.concat("<td>");
+                                        Tabla=Tabla.concat(Integer.toString(grupoAux.getNumAlumnos()));
+                                    Tabla=Tabla.concat("</td>");
+                                   
+                                    Tabla=Tabla.concat("<td>");
+                                        Tabla=Tabla.concat(Integer.toString(grupoAux.getClaveMateriaGrupo()));
+                                    Tabla=Tabla.concat("</td>");
+
+                                    Tabla=Tabla.concat("<td>");
+                                        Tabla=Tabla.concat(Boolean.toString(grupoAux.isEstatus()));
+                                    Tabla=Tabla.concat("</td>");
+
+                                    Tabla=Tabla.concat("<td class='text-center align-middle'>");
+                                        Tabla=Tabla.concat("<button type='button' value='Eliminar' id='EliminarGrupo' class='btn btn-danger'>Eliminar</button>");
+                                        Tabla=Tabla.concat("<button type='button' id='EditarGrupo' value='EditarGetInfoGrupo' data-bs-toggle='modal' data-bs-target='#EditGrupo' class='btn btn-secondary'>Editar</button>");
+                                    Tabla=Tabla.concat("</td>");
+                                    
+                                Tabla=Tabla.concat("</tr>");
+                            }
+                            Tabla=Tabla.concat("</tbody>");
+                            Tabla=Tabla.concat("</table>");
+                            json.put("listaGrupos", Tabla);
+                            
+                            
                             out.println(json);
                         }
                         else{

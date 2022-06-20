@@ -9,6 +9,8 @@ import dao.MateriaDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -67,7 +69,7 @@ public class materiaController extends HttpServlet {
         String idMateria=request.getParameter("idMateria");
         String inputNombreMateria=request.getParameter("inputNombreMateria");
         String inputEstatusMateria=request.getParameter("inputEstatusMateria");
-        
+        List<Materia> listaMaterias=new ArrayList<>();
         Materia materia = null;
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
@@ -78,6 +80,35 @@ public class materiaController extends HttpServlet {
                     if (MateriaDAO.eliminarMateria(Integer.parseInt(idMateria))==1) {
                             json.put("msj", "Registro eliminado con éxito");
                             json.put("status", 200);
+                            listaMaterias=MateriaDAO.getMaterias();
+                        
+                            String Tabla;
+                            Tabla="";
+                            for(Materia materiaAux: listaMaterias){
+                                Tabla=Tabla.concat("<tr>");
+
+                                   Tabla=Tabla.concat("<th scope='row'>");
+                                    Tabla=Tabla.concat(Integer.toString(materiaAux.getClaveMateria()));
+                                   Tabla=Tabla.concat("</th>");
+
+                                   Tabla=Tabla.concat("<td>");
+                                    Tabla=Tabla.concat(materiaAux.getNombreMateria());
+                                   Tabla=Tabla.concat("</td>");
+
+                                   Tabla=Tabla.concat("<td>");
+                                    Tabla=Tabla.concat(Boolean.toString(materiaAux.isEstatus()));
+                                   Tabla=Tabla.concat("</td>");
+
+                                   Tabla=Tabla.concat("<td class='text-center align-middle'>");
+                                    Tabla=Tabla.concat("<button type='button' value='Eliminar' id='EliminarMateria' class='btn btn-danger'>Eliminar</button>");
+                                    Tabla=Tabla.concat("<button type='button' id='EditarMateria' value='EditarGetInfoMateria' data-bs-toggle='modal' data-bs-target='#EditMateria' class='btn btn-secondary'>Editar</button>");
+                                   Tabla=Tabla.concat("</td>");
+
+                                Tabla=Tabla.concat("</tr>");
+                            }
+                            Tabla=Tabla.concat("</tbody>");
+                            Tabla=Tabla.concat("</table>");
+                            json.put("listaMaterias", Tabla);
                             out.println(json);
                     }
                     else{
@@ -123,6 +154,36 @@ public class materiaController extends HttpServlet {
                     if (MateriaDAO.editarMateria(materia)==1) {
                         json.put("msj", "Registro editado con éxito");
                         json.put("status", 200);
+                        listaMaterias=MateriaDAO.getMaterias();
+                        
+                        String Tabla;
+                        
+                        Tabla="";
+                            for(Materia materiaAux: listaMaterias){
+                                Tabla=Tabla.concat("<tr>");
+
+                                   Tabla=Tabla.concat("<th scope='row'>");
+                                    Tabla=Tabla.concat(Integer.toString(materiaAux.getClaveMateria()));
+                                   Tabla=Tabla.concat("</th>");
+
+                                   Tabla=Tabla.concat("<td>");
+                                    Tabla=Tabla.concat(materiaAux.getNombreMateria());
+                                   Tabla=Tabla.concat("</td>");
+
+                                   Tabla=Tabla.concat("<td>");
+                                    Tabla=Tabla.concat(Boolean.toString(materiaAux.isEstatus()));
+                                   Tabla=Tabla.concat("</td>");
+
+                                   Tabla=Tabla.concat("<td class='text-center align-middle'>");
+                                    Tabla=Tabla.concat("<button type='button' value='Eliminar' id='EliminarMateria' class='btn btn-danger'>Eliminar</button>");
+                                    Tabla=Tabla.concat("<button type='button' id='EditarMateria' value='EditarGetInfoMateria' data-bs-toggle='modal' data-bs-target='#EditMateria' class='btn btn-secondary'>Editar</button>");
+                                   Tabla=Tabla.concat("</td>");
+
+                                Tabla=Tabla.concat("</tr>");
+                            }
+                        Tabla=Tabla.concat("</tbody>");
+                        Tabla=Tabla.concat("</table>");
+                        json.put("listaMaterias", Tabla);
                         out.println(json);
                     }
                     else{

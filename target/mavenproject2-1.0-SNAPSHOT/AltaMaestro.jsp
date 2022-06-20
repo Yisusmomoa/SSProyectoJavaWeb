@@ -25,7 +25,7 @@
           aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <a class="navbar-brand" href="#">Inicio</a>
+          <a class="navbar-brand" href="paginaPrincipalControllerAdministrador">Inicio</a>
           <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
@@ -33,18 +33,15 @@
                       Alta
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="#">Alumno</a></li>
+                      <li><a class="dropdown-item" href="./AltaAlumno.jsp">Alumno</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Maestro</a></li>
+                      <li><a class="dropdown-item" href="./AltaMaestro.jsp">Maestro</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Grupo</a></li>
+                      <li><a class="dropdown-item" href="altaGrupoController">Grupo</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Materia</a></li>
+                      <li><a class="dropdown-item" href="./AltaMateria.jsp">Materia</a></li>
                     </ul>
                 </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Inscribir materia</a>
-              </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Catálogo Maestro</a>
               </li>
@@ -92,9 +89,9 @@
                   <label for="exampleInputPassword1" class="form-label">Tipo maestro</label>
                   <select class="form-select" id="tipoMaestro" aria-label="Default select example">
                       <option  selected value="null">Selecciona una opcion</option>
-                      <option value="maestro1">maestro1</option>
-                      <option value="maestro2">maestro2</option>
-                      <option value="maestro3">maestro3</option>
+                      <option value="maestro">maestro1</option>
+                      <option value="maestro">maestro2</option>
+                      <option value="maestro">maestro3</option>
                     </select>
                 </div>
               <div class="d-grid gap-2 col-4 mx-auto">

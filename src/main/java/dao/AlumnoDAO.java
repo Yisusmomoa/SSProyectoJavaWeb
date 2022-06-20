@@ -246,6 +246,34 @@ DELIMITER ;
         return listaAlumnos;
     }
     
+    /**
+     USE `proyectojavawebss`;
+DROP procedure IF EXISTS `elimimnarAlumno`;
+
+USE `proyectojavawebss`;
+DROP procedure IF EXISTS `proyectojavawebss`.`elimimnarAlumno`;
+;
+
+DELIMITER $$
+USE `proyectojavawebss`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `elimimnarAlumno`(
+IN `pmatricula` int
+)
+BEGIN
+UPDATE `proyectojavawebss`.`alumno`
+SET
+`estatus` = 0
+WHERE `matricula` = pmatricula;
+
+END$$
+
+DELIMITER ;
+;
+
+
+     
+     */
+    
     public static int elimimnarAlumno(int idAlumno) throws SQLException{
         Connection con = null;
         try {

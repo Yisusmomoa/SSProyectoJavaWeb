@@ -94,8 +94,8 @@ END$$
 DELIMITER ;
      */
     
-    public static int addMaestro(Maestro maestro){
-        Connection con;
+    public static int addMaestro(Maestro maestro) throws SQLException{
+        Connection con = null;
         try {
             con=DbConnection.getConnection();
             String sql="CALL addMaestro(?,?,?,?)";
@@ -107,6 +107,9 @@ DELIMITER ;
             return statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(maestroDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally{
+            con.close();
         }
         return 0;
     }
