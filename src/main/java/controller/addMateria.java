@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.Materia;
 import org.json.JSONObject;
 
@@ -57,20 +58,31 @@ public class addMateria extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String inputNombre=request.getParameter("inputNombre");
-        Materia materia=new Materia(inputNombre);
+        HttpSession session = request.getSession();
+        
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
-        if (MateriaDAO.addMateria(materia)==1) {
-            json.put("msj", "Materia agregado con exito");
-            json.put("status", 200);
-            out.println(json);
+        
+        if (session.getAttribute("noEmpleado")!=null){
+            String inputNombre=request.getParameter("inputNombre");
+            Materia materia=new Materia(inputNombre);
+            if (MateriaDAO.addMateria(materia)==1) {
+                json.put("msj", "Materia agregado con exito");
+                json.put("status", 200);
+                out.println(json);
+            }
+            else{
+                json.put("msj", "Error ");
+                json.put("status", 400);
+                out.println(json); 
+            }
         }
         else{
-            json.put("msj", "Error ");
+            json.put("msj", "Error, ya caduco tu sesión ");
             json.put("status", 400);
             out.println(json); 
         }
+        
     }
 
     /**

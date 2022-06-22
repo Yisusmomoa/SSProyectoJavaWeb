@@ -60,25 +60,35 @@ public class darBajaMateriaController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String idgrupo=request.getParameter("idgrupo");
-        HttpSession session=request.getSession();
-        Object matricula=session.getAttribute("matricula");
+        HttpSession session = request.getSession(false);
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
-        try {
-            if (grupoDAO.darBajaMateria(Integer.parseInt(idgrupo), (int) matricula)==1) {
-                json.put("msj", "“Alumno dado de baja con éxito");
-                json.put("status", 200);
-                out.println(json);
+        if (session!=null) {
+            String idgrupo=request.getParameter("idgrupo");
+            HttpSession sessionAlumno=request.getSession();
+            Object matricula=sessionAlumno.getAttribute("matricula");
+            
+            try {
+                if (grupoDAO.darBajaMateria(Integer.parseInt(idgrupo), (int) matricula)==1) {
+                    json.put("msj", "“Alumno dado de baja con éxito");
+                    json.put("status", 200);
+                    out.println(json);
+                }
+                else{
+                    json.put("msj", "Error ");
+                    json.put("status", 400); 
+                    out.println(json);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(darBajaMateriaController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            else{
-                json.put("msj", "Error ");
-                json.put("status", 400); 
-                out.println(json);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(darBajaMateriaController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        else{
+            json.put("msj", "Error, ya caduco tu sesión ");
+            json.put("status", 400);
+            out.println(json); 
+        }
+        
     }
 
     /**

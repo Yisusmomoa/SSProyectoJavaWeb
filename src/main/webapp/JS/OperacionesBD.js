@@ -137,10 +137,13 @@ $(document).ready(function() {
                                                 }
                                                 else{
                                                     Swal.fire({
+                                                        position:'center',
                                                         icon: 'error',
-                                                        title: 'Oops...',
-                                                        text: 'Eerror intenta más tarde!'
-                                                      });
+                                                        title: 'Error...',
+                                                        text: `${obj.msj}`,
+                                                        showConfirmButton: false,
+                                                        timer: 1000
+                                                    });
                                                 }
                                             },
                                             error:(error)=>{
@@ -235,10 +238,16 @@ $(document).ready(function() {
                                                 }
                                                 else{
                                                     Swal.fire({
+                                                        position:'center',
                                                         icon: 'error',
-                                                        title: 'Oops...',
-                                                        text: 'Usuario o contraseña incorrecta!'
-                                                      });
+                                                        title: 'Error...',
+                                                        text: `${obj.msj}`,
+                                                        showConfirmButton: false,
+                                                        timer: 1000
+                                                    });
+                                                    setTimeout(()=>{
+                                                        location.href="index.jsp";
+                                                    },2000);
                                                 }
                                             },
                                             error:(error)=>{
@@ -314,10 +323,13 @@ $(document).ready(function() {
                     }
                     else{
                         Swal.fire({
+                            position:'center',
                             icon: 'error',
-                            title: 'Oops...',
-                            text: 'Error'
-                          });
+                            title: 'Error...',
+                            text: `${obj.msj}`,
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
                     }
                 },
                 error:(error)=>{
@@ -370,10 +382,13 @@ $(document).ready(function() {
                     }
                     else{
                         Swal.fire({
+                            position:'center',
                             icon: 'error',
-                            title: 'Oops...',
-                            text: 'Error'
-                          });
+                            title: 'Error...',
+                            text: `${obj.msj}`,
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
                     }
                 },
                 error:(error)=>{
@@ -606,9 +621,12 @@ $(document).ready(function() {
                             }
                             else{
                                 Swal.fire({
-                                        icon: 'error',
-                                        title: 'Oops...',
-                                        text: 'Error intenta más tarde'
+                                    position:'center',
+                                    icon: 'error',
+                                    title: 'Error...',
+                                    text: `${obj.msj}`,
+                                    showConfirmButton: false,
+                                    timer: 1000
                                 });
                             }
                         },
@@ -642,16 +660,29 @@ $(document).ready(function() {
                     },
                     success:(data,textStatus,jqXHR)=>{
                         const obj=JSON.parse(data);
-                        const maestro=JSON.parse(obj.Maestro);
-                        $('#inputIdUsuario').val(maestro.noEmpleado);
-                        $('#inputUsuario').val(maestro.usuario);
-                        $('#inputNombre').val(maestro.nombreMaestro);
-                        if (maestro.estatus) {
-                            $('#inputEstatus').prop('checked',maestro.estatus);
+                        if (obj.status==200) {
+                            const maestro=JSON.parse(obj.Maestro);
+                            $('#inputIdUsuario').val(maestro.noEmpleado);
+                            $('#inputUsuario').val(maestro.usuario);
+                            $('#inputNombre').val(maestro.nombreMaestro);
+                            if (maestro.estatus) {
+                                $('#inputEstatus').prop('checked',maestro.estatus);
+                            }
+                            else{
+                                $('#inputEstatus').prop('checked',maestro.estatus);
+                            }
                         }
                         else{
-                            $('#inputEstatus').prop('checked',maestro.estatus);
+                            Swal.fire({
+                                    position:'center',
+                                    icon: 'error',
+                                    title: 'Error...',
+                                    text: `${obj.msj}`,
+                                    showConfirmButton: false,
+                                    timer: 1000
+                            });
                         }
+                        
                     },
                     error:(error)=>{
                         debugger;
@@ -695,17 +726,20 @@ $(document).ready(function() {
                                 title: `${obj.msj}`,
                                 showConfirmButton: false,
                                 timer: 1000
-                              });
-                              setTimeout(()=>{
-                                    $("#editMaestro").modal('hide');  
-                                },1000);
-                                $('#tbodyidMaestros').html(obj.listaMaestros)
+                            });
+                            setTimeout(()=>{
+                                $("#editMaestro").modal('hide');  
+                            },1000);
+                            $('#tbodyidMaestros').html(obj.listaMaestros)
                         }
                         else{
-                           Swal.fire({
+                          Swal.fire({
+                                    position:'center',
                                     icon: 'error',
-                                    title: 'Oops...',
-                                    text: 'Error intenta más tarde'
+                                    title: 'Error...',
+                                    text: `${obj.msj}`,
+                                    showConfirmButton: false,
+                                    timer: 1000
                             });
                         }
                     },
@@ -763,9 +797,12 @@ $(document).ready(function() {
                                 }
                                 else{
                                     Swal.fire({
+                                        position:'center',
                                         icon: 'error',
-                                        title: 'Oops...',
-                                        text: 'Error intenta más tarde'
+                                        title: 'Error...',
+                                        text: `${obj.msj}`,
+                                        showConfirmButton: false,
+                                        timer: 1000
                                     });
                                 }
                           }, error:(error)=>{
@@ -795,16 +832,29 @@ $(document).ready(function() {
                         "opcion":opcion
                     },success:(data,textStatus,jqXHR)=>{
                         const obj=JSON.parse(data);
-                        const alumno=JSON.parse(obj.Alumno);
-                        $('#inputIdAlumno').val(alumno.matricula);
-                        $('#inputUsuarioAlumno').val(alumno.usuario);
-                        $('#inputNombreAlumno').val(alumno.nombre);
-                         if (alumno.estatus) {
-                            $('#inputEstatusAlumno').prop('checked',alumno.estatus);
+                        if (obj.status==200) {
+                            const alumno=JSON.parse(obj.Alumno);
+                            $('#inputIdAlumno').val(alumno.matricula);
+                            $('#inputUsuarioAlumno').val(alumno.usuario);
+                            $('#inputNombreAlumno').val(alumno.nombre);
+                             if (alumno.estatus) {
+                                $('#inputEstatusAlumno').prop('checked',alumno.estatus);
+                            }
+                            else{
+                                $('#inputEstatusAlumno').prop('checked',alumno.estatus);
+                            }
                         }
                         else{
-                            $('#inputEstatusAlumno').prop('checked',alumno.estatus);
+                            Swal.fire({
+                                position:'center',
+                                icon: 'error',
+                                title: 'Error...',
+                                text: `${obj.msj}`,
+                                showConfirmButton: false,
+                                timer: 1000
+                            });
                         }
+                        
                         
                     },error:(error)=>{
                         debugger;
@@ -857,9 +907,12 @@ $(document).ready(function() {
                             }
                             else{
                                Swal.fire({
-                                        icon: 'error',
-                                        title: 'Oops...',
-                                        text: 'Error intenta más tarde'
+                                    position:'center',
+                                    icon: 'error',
+                                    title: 'Error...',
+                                    text: `${obj.msj}`,
+                                    showConfirmButton: false,
+                                    timer: 1000
                                 });
                             }
                     }
@@ -916,9 +969,12 @@ $(document).ready(function() {
                                 }
                                 else{
                                     Swal.fire({
+                                        position:'center',
                                         icon: 'error',
-                                        title: 'Oops...',
-                                        text: 'Error intenta más tarde'
+                                        title: 'Error...',
+                                        text: `${obj.msj}`,
+                                        showConfirmButton: false,
+                                        timer: 1000
                                     });
                                 }
                           }, error:(error)=>{
@@ -950,15 +1006,28 @@ $(document).ready(function() {
                         "opcion":opcion
                     },success:(data,textStatus,jqXHR)=>{
                         const obj=JSON.parse(data);
-                        const materia=JSON.parse(obj.Materia);
-                        $('#inputClaveMateria').val(materia.claveMateria);
-                        $('#inputNombreMateria').val(materia.nombreMateria);
-                         if (materia.estatus) {
-                            $('#inputEstatusMateria').prop('checked',materia.estatus);
+                        if (obj.status==200) {
+                            const materia=JSON.parse(obj.Materia);
+                            $('#inputClaveMateria').val(materia.claveMateria);
+                            $('#inputNombreMateria').val(materia.nombreMateria);
+                             if (materia.estatus) {
+                                $('#inputEstatusMateria').prop('checked',materia.estatus);
+                            }
+                            else{
+                                $('#inputEstatusMateria').prop('checked',materia.estatus);
+                            }
                         }
                         else{
-                            $('#inputEstatusMateria').prop('checked',materia.estatus);
+                            Swal.fire({
+                                position:'center',
+                                icon: 'error',
+                                title: 'Error...',
+                                text: `${obj.msj}`,
+                                showConfirmButton: false,
+                                timer: 1000
+                            });
                         }
+                        
                         
                     },error:(error)=>{
                         debugger;
@@ -1008,9 +1077,12 @@ $(document).ready(function() {
                                 }
                                 else{
                                    Swal.fire({
-                                            icon: 'error',
-                                            title: 'Oops...',
-                                            text: 'Error intenta más tarde'
+                                        position:'center',
+                                        icon: 'error',
+                                        title: 'Error...',
+                                        text: `${obj.msj}`,
+                                        showConfirmButton: false,
+                                        timer: 1000
                                     });
                                 }
                             },
@@ -1075,9 +1147,12 @@ $(document).ready(function() {
                                 }
                                 else{
                                     Swal.fire({
+                                        position:'center',
                                         icon: 'error',
-                                        title: 'Oops...',
-                                        text: 'Error intenta más tarde'
+                                        title: 'Error...',
+                                        text: `${obj.msj}`,
+                                        showConfirmButton: false,
+                                        timer: 1000
                                     });
                                 }
                           }, error:(error)=>{
@@ -1107,19 +1182,31 @@ $(document).ready(function() {
                         "idGrupo":idGrupo,
                         "opcion":opcion
                     },success:(data,textStatus,jqXHR)=>{
-                        const obj=JSON.parse(data);
-                        const grupo=JSON.parse(obj.Grupo);
-                        debugger;
-                        
-                        $('#inputidGrupo').val(grupo.idGrupo);
-                        $('#inputnumAlumnosGrupo').val(grupo.numAlumnos);
-                        $('#materiaId').val(grupo.claveMateriaGrupo);
-                        if (grupo.estatus) {
-                            $('#inputEstatusGrupo').prop('checked',grupo.estatus);
+                            const obj=JSON.parse(data);
+                            debugger;
+                        if (obj.status==200) {
+                            const grupo=JSON.parse(obj.Grupo);
+                            $('#inputidGrupo').val(grupo.idGrupo);
+                            $('#inputnumAlumnosGrupo').val(grupo.numAlumnos);
+                            $('#materiaId').val(grupo.claveMateriaGrupo);
+                            if (grupo.estatus) {
+                                $('#inputEstatusGrupo').prop('checked',grupo.estatus);
+                            }
+                            else{
+                                $('#inputEstatusGrupo').prop('checked',grupo.estatus);
+                            }
                         }
                         else{
-                            $('#inputEstatusGrupo').prop('checked',grupo.estatus);
+                            Swal.fire({
+                                position:'center',
+                                icon: 'error',
+                                title: 'Error...',
+                                text: `${obj.msj}`,
+                                showConfirmButton: false,
+                                timer: 1000
+                          });
                         }
+
                         
                     },error:(error)=>{
                         debugger;
@@ -1158,18 +1245,25 @@ $(document).ready(function() {
                                         icon: 'success',
                                         title: `${obj.msj}`,
                                         showConfirmButton: false,
-                                        timer: 1000
+                                        timer: 500
                                       });
                                       setTimeout(()=>{
-                                            $("#EditGrupo").modal('hide');  
+                                            $("#EditGrupo").modal('hide'); 
                                         },1000);
+                                        $('#inputidGrupo').val('null');
+                                        $('#inputnumAlumnosGrupo').val('');
+                                        $('#inputEstatusGrupo').prop('checked',false);
+                                            
                                        $("#tbodyidGrupo").html(obj.listaGrupos);
                                 }
                                 else{
-                                   Swal.fire({
-                                            icon: 'error',
-                                            title: 'Oops...',
-                                            text: 'Error intenta más tarde'
+                                    Swal.fire({
+                                        position:'center',
+                                        icon: 'error',
+                                        title: 'Error...',
+                                        text: `${obj.msj}`,
+                                        showConfirmButton: false,
+                                        timer: 1000
                                     });
                                 }
                             },

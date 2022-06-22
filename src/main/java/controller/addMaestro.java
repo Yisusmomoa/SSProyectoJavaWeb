@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.Maestro;
 import org.json.JSONObject;
 
@@ -49,24 +50,34 @@ public class addMaestro extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String InputNombre=request.getParameter("InputNombre");
-        String InputUsuario=request.getParameter("InputUsuario");
-        String Inputcontraseña=request.getParameter("Inputcontraseña");
-        String tipoMaestro=request.getParameter("tipoMaestro");
-        Maestro maestro=new Maestro(InputNombre,Inputcontraseña,
-                InputUsuario,tipoMaestro);
+        HttpSession session = request.getSession();
+        
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
-        if (maestroDAO.addMaestro(maestro)==1) {
-            json.put("msj", "Maestro agregado con exito");
-            json.put("status", 200);
-            out.println(json);
+        if (session.getAttribute("noEmpleado")!=null) {
+            String InputNombre=request.getParameter("InputNombre");
+            String InputUsuario=request.getParameter("InputUsuario");
+            String Inputcontraseña=request.getParameter("Inputcontraseña");
+            String tipoMaestro=request.getParameter("tipoMaestro");
+            Maestro maestro=new Maestro(InputNombre,Inputcontraseña,
+                    InputUsuario,tipoMaestro);
+            if (maestroDAO.addMaestro(maestro)==1) {
+                json.put("msj", "Maestro agregado con exito");
+                json.put("status", 200);
+                out.println(json);
+            }
+            else{
+                json.put("msj", "Error ");
+                json.put("status", 400);
+                out.println(json); 
+            }
         }
         else{
-            json.put("msj", "Error ");
+            json.put("msj", "Error, ya caduco tu sesión ");
             json.put("status", 400);
             out.println(json); 
         }
+        
     }
 
     /**

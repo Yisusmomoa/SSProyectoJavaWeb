@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.Materia;
 import org.json.JSONObject;
 
@@ -64,144 +65,156 @@ public class materiaController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        
         String opcion=request.getParameter("opcion");
         
         String idMateria=request.getParameter("idMateria");
         String inputNombreMateria=request.getParameter("inputNombreMateria");
         String inputEstatusMateria=request.getParameter("inputEstatusMateria");
+        
         List<Materia> listaMaterias=new ArrayList<>();
         Materia materia = null;
+        
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
         
-        switch(opcion){
-            case "Eliminar":{
-                try {
-                    if (MateriaDAO.eliminarMateria(Integer.parseInt(idMateria))==1) {
-                            json.put("msj", "Registro eliminado con éxito");
-                            json.put("status", 200);
-                            listaMaterias=MateriaDAO.getMaterias();
-                        
-                            String Tabla;
-                            Tabla="";
-                            for(Materia materiaAux: listaMaterias){
-                                Tabla=Tabla.concat("<tr>");
+        if (session.getAttribute("noEmpleado")!=null) {
+                switch(opcion){
+                    case "Eliminar":{
+                        try {
+                            if (MateriaDAO.eliminarMateria(Integer.parseInt(idMateria))==1) {
+                                    json.put("msj", "Registro eliminado con éxito");
+                                    json.put("status", 200);
+                                    listaMaterias=MateriaDAO.getMaterias();
 
-                                   Tabla=Tabla.concat("<th scope='row'>");
-                                    Tabla=Tabla.concat(Integer.toString(materiaAux.getClaveMateria()));
-                                   Tabla=Tabla.concat("</th>");
+                                    String Tabla;
+                                    Tabla="";
+                                    for(Materia materiaAux: listaMaterias){
+                                        Tabla=Tabla.concat("<tr>");
 
-                                   Tabla=Tabla.concat("<td>");
-                                    Tabla=Tabla.concat(materiaAux.getNombreMateria());
-                                   Tabla=Tabla.concat("</td>");
+                                           Tabla=Tabla.concat("<th scope='row'>");
+                                            Tabla=Tabla.concat(Integer.toString(materiaAux.getClaveMateria()));
+                                           Tabla=Tabla.concat("</th>");
 
-                                   Tabla=Tabla.concat("<td>");
-                                    Tabla=Tabla.concat(Boolean.toString(materiaAux.isEstatus()));
-                                   Tabla=Tabla.concat("</td>");
+                                           Tabla=Tabla.concat("<td>");
+                                            Tabla=Tabla.concat(materiaAux.getNombreMateria());
+                                           Tabla=Tabla.concat("</td>");
 
-                                   Tabla=Tabla.concat("<td class='text-center align-middle'>");
-                                    Tabla=Tabla.concat("<button type='button' value='Eliminar' id='EliminarMateria' class='btn btn-danger'>Eliminar</button>");
-                                    Tabla=Tabla.concat("<button type='button' id='EditarMateria' value='EditarGetInfoMateria' data-bs-toggle='modal' data-bs-target='#EditMateria' class='btn btn-secondary'>Editar</button>");
-                                   Tabla=Tabla.concat("</td>");
+                                           Tabla=Tabla.concat("<td>");
+                                            Tabla=Tabla.concat(Boolean.toString(materiaAux.isEstatus()));
+                                           Tabla=Tabla.concat("</td>");
 
-                                Tabla=Tabla.concat("</tr>");
+                                           Tabla=Tabla.concat("<td class='text-center align-middle'>");
+                                            Tabla=Tabla.concat("<button type='button' value='Eliminar' id='EliminarMateria' class='btn btn-danger'>Eliminar</button>");
+                                            Tabla=Tabla.concat("<button type='button' id='EditarMateria' value='EditarGetInfoMateria' data-bs-toggle='modal' data-bs-target='#EditMateria' class='btn btn-secondary'>Editar</button>");
+                                           Tabla=Tabla.concat("</td>");
+
+                                        Tabla=Tabla.concat("</tr>");
+                                    }
+                                    Tabla=Tabla.concat("</tbody>");
+                                    Tabla=Tabla.concat("</table>");
+                                    json.put("listaMaterias", Tabla);
+                                    out.println(json);
                             }
-                            Tabla=Tabla.concat("</tbody>");
-                            Tabla=Tabla.concat("</table>");
-                            json.put("listaMaterias", Tabla);
-                            out.println(json);
+                            else{
+                                json.put("msj", "Error ");
+                                json.put("status", 400); 
+                                out.println(json);  
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(materiaController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        break;
                     }
-                    else{
+                    case "EditarGetInfoMateria":{
+                        try {
+                            materia=MateriaDAO.getMateriaByID(Integer.parseInt(idMateria));
+                            if (materia!=null) {
+                                String materiaJsonString = new Gson().toJson(materia);
+                                json.put("Materia", materiaJsonString);
+                                json.put("status", 200);
+                                out.println(json);
+                            }
+                            else{
+                                json.put("msj", "Error ");
+                                json.put("status", 400); 
+                                out.println(json);   
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(materiaController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        break;
+                    }
+                    case "EditarMateriaSetInfo":{
+
+                        try {
+                            materia=MateriaDAO.getMateriaByID(Integer.parseInt(idMateria));
+                            if (materia.getNombreMateria()!=inputNombreMateria) {
+                                materia.setNombreMateria(inputNombreMateria);
+                            }
+                            if (materia.isEstatus()!=Boolean.parseBoolean(inputEstatusMateria)) {
+                                materia.setEstatus(Boolean.parseBoolean(inputEstatusMateria));
+                            }
+                            if (MateriaDAO.editarMateria(materia)==1) {
+                                json.put("msj", "Registro editado con éxito");
+                                json.put("status", 200);
+                                listaMaterias=MateriaDAO.getMaterias();
+
+                                String Tabla;
+
+                                Tabla="";
+                                    for(Materia materiaAux: listaMaterias){
+                                        Tabla=Tabla.concat("<tr>");
+
+                                           Tabla=Tabla.concat("<th scope='row'>");
+                                            Tabla=Tabla.concat(Integer.toString(materiaAux.getClaveMateria()));
+                                           Tabla=Tabla.concat("</th>");
+
+                                           Tabla=Tabla.concat("<td>");
+                                            Tabla=Tabla.concat(materiaAux.getNombreMateria());
+                                           Tabla=Tabla.concat("</td>");
+
+                                           Tabla=Tabla.concat("<td>");
+                                            Tabla=Tabla.concat(Boolean.toString(materiaAux.isEstatus()));
+                                           Tabla=Tabla.concat("</td>");
+
+                                           Tabla=Tabla.concat("<td class='text-center align-middle'>");
+                                            Tabla=Tabla.concat("<button type='button' value='Eliminar' id='EliminarMateria' class='btn btn-danger'>Eliminar</button>");
+                                            Tabla=Tabla.concat("<button type='button' id='EditarMateria' value='EditarGetInfoMateria' data-bs-toggle='modal' data-bs-target='#EditMateria' class='btn btn-secondary'>Editar</button>");
+                                           Tabla=Tabla.concat("</td>");
+
+                                        Tabla=Tabla.concat("</tr>");
+                                    }
+                                Tabla=Tabla.concat("</tbody>");
+                                Tabla=Tabla.concat("</table>");
+                                json.put("listaMaterias", Tabla);
+                                out.println(json);
+                            }
+                            else{
+                                json.put("msj", "Error ");
+                                json.put("status", 400);
+                                out.println(json);
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(materiaController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        break;
+                    }
+                    default:{
                         json.put("msj", "Error ");
                         json.put("status", 400); 
-                        out.println(json);  
+                        out.println(json);    
                     }
-                } catch (SQLException ex) {
-                    Logger.getLogger(materiaController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                break;
-            }
-            case "EditarGetInfoMateria":{
-                try {
-                    materia=MateriaDAO.getMateriaByID(Integer.parseInt(idMateria));
-                    if (materia!=null) {
-                        String materiaJsonString = new Gson().toJson(materia);
-                        json.put("Materia", materiaJsonString);
-                        json.put("status", 200);
-                        out.println(json);
-                    }
-                    else{
-                        json.put("msj", "Error ");
-                        json.put("status", 400); 
-                        out.println(json);   
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(materiaController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                break;
-            }
-            case "EditarMateriaSetInfo":{
-                
-                try {
-                    materia=MateriaDAO.getMateriaByID(Integer.parseInt(idMateria));
-                    if (materia.getNombreMateria()!=inputNombreMateria) {
-                        materia.setNombreMateria(inputNombreMateria);
-                    }
-                    if (materia.isEstatus()!=Boolean.parseBoolean(inputEstatusMateria)) {
-                        materia.setEstatus(Boolean.parseBoolean(inputEstatusMateria));
-                    }
-                    if (MateriaDAO.editarMateria(materia)==1) {
-                        json.put("msj", "Registro editado con éxito");
-                        json.put("status", 200);
-                        listaMaterias=MateriaDAO.getMaterias();
-                        
-                        String Tabla;
-                        
-                        Tabla="";
-                            for(Materia materiaAux: listaMaterias){
-                                Tabla=Tabla.concat("<tr>");
-
-                                   Tabla=Tabla.concat("<th scope='row'>");
-                                    Tabla=Tabla.concat(Integer.toString(materiaAux.getClaveMateria()));
-                                   Tabla=Tabla.concat("</th>");
-
-                                   Tabla=Tabla.concat("<td>");
-                                    Tabla=Tabla.concat(materiaAux.getNombreMateria());
-                                   Tabla=Tabla.concat("</td>");
-
-                                   Tabla=Tabla.concat("<td>");
-                                    Tabla=Tabla.concat(Boolean.toString(materiaAux.isEstatus()));
-                                   Tabla=Tabla.concat("</td>");
-
-                                   Tabla=Tabla.concat("<td class='text-center align-middle'>");
-                                    Tabla=Tabla.concat("<button type='button' value='Eliminar' id='EliminarMateria' class='btn btn-danger'>Eliminar</button>");
-                                    Tabla=Tabla.concat("<button type='button' id='EditarMateria' value='EditarGetInfoMateria' data-bs-toggle='modal' data-bs-target='#EditMateria' class='btn btn-secondary'>Editar</button>");
-                                   Tabla=Tabla.concat("</td>");
-
-                                Tabla=Tabla.concat("</tr>");
-                            }
-                        Tabla=Tabla.concat("</tbody>");
-                        Tabla=Tabla.concat("</table>");
-                        json.put("listaMaterias", Tabla);
-                        out.println(json);
-                    }
-                    else{
-                        json.put("msj", "Error ");
-                        json.put("status", 400);
-                        out.println(json);
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(materiaController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                break;
-            }
-            default:{
-                json.put("msj", "Error ");
-                json.put("status", 400); 
-                out.println(json);    
             }
         }
+        else{
+            json.put("msj", "Error, ya caduco tu sesión ");
+            json.put("status", 400);
+            out.println(json); 
+        }
+        
         
     }
 

@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.Alumno;
 import org.json.JSONObject;
 
@@ -57,22 +58,34 @@ public class addAlumno extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String InputNombre=request.getParameter("InputNombre");
-        String InputUsuario=request.getParameter("InputUsuario");
-        String Inputcontraseña=request.getParameter("Inputcontraseña");
-        Alumno alumno=new Alumno(InputUsuario,InputNombre,Inputcontraseña);
+        HttpSession session = request.getSession();
+        
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
-        if (AlumnoDAO.addAlumno(alumno)==1) {
-            json.put("msj", "Alumno agregado con exito");
-            json.put("status", 200);
-            out.println(json);
+        
+        if (session.getAttribute("noEmpleado")!=null) {
+                String InputNombre=request.getParameter("InputNombre");
+                String InputUsuario=request.getParameter("InputUsuario");
+                String Inputcontraseña=request.getParameter("Inputcontraseña");
+                Alumno alumno=new Alumno(InputUsuario,InputNombre,Inputcontraseña);
+                
+                if (AlumnoDAO.addAlumno(alumno)==1) {
+                    json.put("msj", "Alumno agregado con exito");
+                    json.put("status", 200);
+                    out.println(json);
+                }
+                else{
+                    json.put("msj", "Error ");
+                    json.put("status", 400);
+                    out.println(json); 
+                }
         }
         else{
-            json.put("msj", "Error ");
+            json.put("msj", "Error, ya caduco tu sesión ");
             json.put("status", 400);
             out.println(json); 
         }
+        
     }
 
     /**

@@ -14,4 +14,13 @@
     <body>
         <h1>Hello World!</h1>
     </body>
+    <%
+    /*
+        
+        setTimeout(()=>{
+            location.href="index.jsp";
+        },2000);
+        */
+    
+    %>
 </html>

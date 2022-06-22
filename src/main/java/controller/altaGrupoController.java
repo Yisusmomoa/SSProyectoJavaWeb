@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.Grupo;
 import models.Materia;
 import org.json.JSONObject;
@@ -71,25 +72,34 @@ public class altaGrupoController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         int numAlumnos= Integer.parseInt(request.getParameter("numAlumnos")) ;
         int materiaId= Integer.parseInt(request.getParameter("materiaId"));
         Grupo grupo=new Grupo(materiaId,numAlumnos);
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
-        try {
-            if (grupoDAO.addGrupo(grupo)==1) {
-                json.put("msj", "Grupo creado con exito");
-                json.put("status", 200);
-                out.println(json);
+        if (session.getAttribute("noEmpleado")!=null) {
+            try {
+                    if (grupoDAO.addGrupo(grupo)==1) {
+                        json.put("msj", "Grupo creado con exito");
+                        json.put("status", 200);
+                        out.println(json);
+                    }
+                    else{
+                        json.put("msj", "Error ");
+                        json.put("status", 400); 
+                        out.println(json);
+                    }
+            } catch (SQLException ex) {
+                Logger.getLogger(altaGrupoController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            else{
-                json.put("msj", "Error ");
-                json.put("status", 400); 
-                out.println(json);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(altaGrupoController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        else{
+            json.put("msj", "Error, ya caduco tu sesión ");
+            json.put("status", 400);
+            out.println(json); 
+        }
+        
     }
 
     /**
