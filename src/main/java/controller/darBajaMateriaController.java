@@ -8,6 +8,8 @@ import dao.grupoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.Grupo;
 import org.json.JSONObject;
 
 /**
@@ -63,6 +66,7 @@ public class darBajaMateriaController extends HttpServlet {
         HttpSession session = request.getSession(false);
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
+        List<Grupo> listaGrupos=new ArrayList<>();
         if (session!=null) {
             String idgrupo=request.getParameter("idgrupo");
             HttpSession sessionAlumno=request.getSession();
@@ -70,8 +74,40 @@ public class darBajaMateriaController extends HttpServlet {
             
             try {
                 if (grupoDAO.darBajaMateria(Integer.parseInt(idgrupo), (int) matricula)==1) {
+                    String Tabla;
+                    Tabla="";
+                    listaGrupos=grupoDAO.getMateriasByAlumno((int) matricula);
+                    for(Grupo grupoAux:listaGrupos){
+                        Tabla=Tabla.concat("<tr>");
+                        
+                        Tabla=Tabla.concat("<th scope='row'>");
+                            Tabla=Tabla.concat(Integer.toString(grupoAux.getIdGrupo()));
+                        Tabla=Tabla.concat("</th>");
+                        
+                        Tabla=Tabla.concat("<td>");
+                            Tabla=Tabla.concat(grupoAux.getMateria().getNombreMateria());
+                        Tabla=Tabla.concat("</td>");
+                        
+                        Tabla=Tabla.concat("<td>");
+                            Tabla=Tabla.concat(Boolean.toString(grupoAux.isEstatus()));
+                        Tabla=Tabla.concat("</td>");
+                        
+                        Tabla=Tabla.concat("<td>");
+                            Tabla=Tabla.concat(Boolean.toString(grupoAux.getMateria().isEstatus()));
+                        Tabla=Tabla.concat("</td>");
+                        
+                        Tabla=Tabla.concat("<td class='text-center align-middle'>");
+                            Tabla=Tabla.concat("<button type='submit'\n" +
+"                        value='DarBaja'\n" +
+"                        id='DarBajaMateria' \n" +
+"                        class='btn btn-danger'>Dar de baja</button>");
+                        Tabla=Tabla.concat("</td>");
+                        
+                        Tabla=Tabla.concat("</tr>");
+                    }
                     json.put("msj", "“Alumno dado de baja con éxito");
                     json.put("status", 200);
+                    json.put("listaGrupos", Tabla);
                     out.println(json);
                 }
                 else{

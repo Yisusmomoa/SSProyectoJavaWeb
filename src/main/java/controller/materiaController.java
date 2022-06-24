@@ -112,8 +112,8 @@ public class materiaController extends HttpServlet {
 
                                         Tabla=Tabla.concat("</tr>");
                                     }
-                                    Tabla=Tabla.concat("</tbody>");
-                                    Tabla=Tabla.concat("</table>");
+                                    /*Tabla=Tabla.concat("</tbody>");
+                                    Tabla=Tabla.concat("</table>");*/
                                     json.put("listaMaterias", Tabla);
                                     out.println(json);
                             }
@@ -187,8 +187,8 @@ public class materiaController extends HttpServlet {
 
                                         Tabla=Tabla.concat("</tr>");
                                     }
-                                Tabla=Tabla.concat("</tbody>");
-                                Tabla=Tabla.concat("</table>");
+                                /*Tabla=Tabla.concat("</tbody>");
+                                Tabla=Tabla.concat("</table>");*/
                                 json.put("listaMaterias", Tabla);
                                 out.println(json);
                             }

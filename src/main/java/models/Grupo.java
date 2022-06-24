@@ -27,7 +27,8 @@ CONSTRAINT fkmateria foreign key (claveMateriaGrupo) references Materia(claveMat
 
     
     
-    public Grupo(int idGrupo, int claveMateriaGrupo, int numAlumnos, Materia materia) {
+    public Grupo(int idGrupo, int claveMateriaGrupo, 
+            int numAlumnos, Materia materia) {
         this.idGrupo = idGrupo;
         this.claveMateriaGrupo = claveMateriaGrupo;
         this.numAlumnos = numAlumnos;
@@ -56,6 +57,12 @@ CONSTRAINT fkmateria foreign key (claveMateriaGrupo) references Materia(claveMat
         this.idGrupo = idGrupo;
         this.claveMateriaGrupo = claveMateriaGrupo;
         this.numAlumnos = numAlumnos;
+        this.estatus = estatus;
+        this.materia = materia;
+    }
+
+    public Grupo(int idGrupo, boolean estatus, Materia materia) {
+        this.idGrupo = idGrupo;
         this.estatus = estatus;
         this.materia = materia;
     }

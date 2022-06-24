@@ -13,6 +13,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias");
+    List<Grupo> listaGrupos=(List<Grupo>)request.getAttribute("listaGrupos");
+    List<Grupo> listaGruposAlumno=(List<Grupo>)request.getAttribute("listaGruposAlumno");
+    
 %>
 <!DOCTYPE html>
 <html>
@@ -33,32 +36,37 @@
       <table class="table table-striped 
           table-hover table-bordered  
           table-responsive caption-top 
-          mx-auto align-middle table-wrapper-scroll-y" id="table">
+          mx-auto align-middle table-wrapper-scroll-y"
+          id="table">
         <thead>
           <tr>
-            <th scope="col">id</th>
-            <th scope="col">nombre maestro</th>
-            <th scope="col">usuario</th>
-            <th scope="col" id="acciones">acciones</th>
+            <th scope="col">Id grupo</th>
+            <th scope="col">Nombre materia</th>
+            <th scope="col">Estatus grupo</th>
+            <th scope="col">Estatus materia</th>
+            <th scope="col" id="acciones">Acciones</th>
           </tr>
         </thead>
-        <tbody id="tbodyid">
-            <%for(Materia materia: listaMaterias){%>
-           <tr>
-            <th scope="row"><%= materia.getClaveMateria() %></th>
-            <td><%= materia.getNombreMateria() %></td>
-            <td><%= materia.isEstatus() %></td>
-            <td class="text-center align-middle">
-                <a href="" class="btn btn-danger">Eliminar</a>
-                <a href="" class="btn btn-secondary">Editar</a>
-            </td>
-          </tr>
+        <tbody id="tbodyidMateriasAlumno">
+            <%for(Grupo grupo: listaGruposAlumno){%>
+                <tr>
+                 <th scope="row"><%= grupo.getIdGrupo() %></th>
+                 <td><%= grupo.getMateria().getNombreMateria() %></td>
+                 <td><%= grupo.isEstatus() %></td>
+                 <td><%= grupo.getMateria().isEstatus() %></td>
+                 <td class="text-center align-middle">
+                     <button type="submit"
+                        value="DarBaja"
+                        id="DarBajaMateria" 
+                        class="btn btn-danger">Dar de baja</button>
+                 </td>
+               </tr>
           <%}%>
         </tbody>
       </table>
     </div>
     
-            <h2 class="mt-5 pt-5">Materias</h2>
+            <h2 class="mt-5 pt-5">Grupos</h2>
             <div class="container-fluid mt-2 mb-5 
     my-custom-scrollbar">
       <table class="table table-striped 
@@ -68,23 +76,26 @@
        
         <thead>
           <tr>
-            <th scope="col">id</th>
-            <th scope="col">nombre</th>
-            <th scope="col">usuario</th>
+            <th scope="col">Id grupo</th>
+            <th scope="col">Nombre materia</th>
+            <th scope="col">Estatus grupo</th>
+            <th scope="col">Estatus materia</th>
             <th scope="col" id="acciones">acciones</th>
           </tr>
         </thead>
-        <tbody id="tbodyid">
-            <%for(Materia materia: listaMaterias){%>
-           <tr>
-            <th scope="row"><%= materia.getClaveMateria() %></th>
-            <td><%= materia.getNombreMateria() %></td>
-            <td><%= materia.isEstatus() %></td>
-            <td class="text-center align-middle">
-                <a href="" class="btn btn-danger">Eliminar</a>
-                <a href="" class="btn btn-secondary">Editar</a>
-            </td>
-          </tr>
+        <tbody id="tbodyidgrupos">
+            <%for(Grupo grupo: listaGrupos){%>
+                <tr>
+                 <th scope="row"><%= grupo.getIdGrupo() %></th>
+                 <td><%= grupo.getMateria().getNombreMateria() %></td>
+                 <td><%= grupo.isEstatus()%></td>
+                 <td><%= grupo.getMateria().isEstatus() %></td>
+                 <td class="text-center align-middle">
+                     <button type="button" id="InscribirMateria"
+                        value="Inscribir"
+                        class="btn btn-secondary">Inscribir</button>
+                 </td>
+               </tr>
           <%}%>
         </tbody>
       </table>

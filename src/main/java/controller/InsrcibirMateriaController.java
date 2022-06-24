@@ -9,6 +9,7 @@ import dao.grupoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,26 +66,77 @@ public class InsrcibirMateriaController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String idgrupo=request.getParameter("idgrupo");
-        HttpSession session=request.getSession();
-        Object matricula=session.getAttribute("matricula");
+        
+        HttpSession session=request.getSession(false);
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
-        
-        try {
-            if (grupoDAO.inscribirMateria(Integer.parseInt(idgrupo), (int) matricula)==1) {
-                json.put("msj", "Alumno inscrito con éxito");
-                json.put("status", 200);
-                out.println(json);
+        if (session.getAttribute("matricula")!=null) {
+            HttpSession session2=request.getSession();
+            Object matricula=session2.getAttribute("matricula");
+            String idgrupo=request.getParameter("idgrupo");
+           
+
+            List<Grupo> listaGrupos=new ArrayList<>();
+
+            try {
+                int result=grupoDAO.inscribirMateria(Integer.parseInt(idgrupo), (int) matricula);
+                if (result==1) {
+                    String Tabla;
+                    Tabla="";
+                    listaGrupos=grupoDAO.getMateriasByAlumno((int) matricula);
+                    for(Grupo grupoAux:listaGrupos){
+                            Tabla=Tabla.concat("<tr>");
+
+                            Tabla=Tabla.concat("<th scope='row'>");
+                                Tabla=Tabla.concat(Integer.toString(grupoAux.getIdGrupo()));
+                            Tabla=Tabla.concat("</th>");
+
+                            Tabla=Tabla.concat("<td>");
+                                Tabla=Tabla.concat(grupoAux.getMateria().getNombreMateria());
+                            Tabla=Tabla.concat("</td>");
+
+                            Tabla=Tabla.concat("<td>");
+                                Tabla=Tabla.concat(Boolean.toString(grupoAux.isEstatus()));
+                            Tabla=Tabla.concat("</td>");
+
+                            Tabla=Tabla.concat("<td>");
+                                Tabla=Tabla.concat(Boolean.toString(grupoAux.getMateria().isEstatus()));
+                            Tabla=Tabla.concat("</td>");
+
+                            Tabla=Tabla.concat("<td class='text-center align-middle'>");
+                                Tabla=Tabla.concat("<button type='submit'\n" +
+    "                        value='DarBaja'\n" +
+    "                        id='DarBajaMateria' \n" +
+    "                        class='btn btn-danger'>Dar de baja</button>");
+                            Tabla=Tabla.concat("</td>");
+
+                            Tabla=Tabla.concat("</tr>");
+                    }
+                    json.put("msj", "Alumno inscrito con éxito");
+                    json.put("status", 200);
+                    json.put("listaGrupos", Tabla);
+                    out.println(json);
+                }
+                else if(result==-1){
+                    json.put("msj", "Error, ya tienes inscrita está materia");
+                    json.put("status", 400); 
+                    out.println(json);
+                }
+                else{
+                    json.put("msj", "Error ");
+                    json.put("status", 400); 
+                    out.println(json);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(InsrcibirMateriaController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            else{
-                json.put("msj", "Error ");
-                json.put("status", 400); 
-                out.println(json);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InsrcibirMateriaController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        else{
+            json.put("msj", "Error, ya caduco tu sesión ");
+            json.put("status", 400);
+            out.println(json); 
+        }
+        
         
     }
 

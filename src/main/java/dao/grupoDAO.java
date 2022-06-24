@@ -160,16 +160,61 @@ DELIMITER ;
         }
         return listaGrupos;
     }
-    
+    /**
+     USE `proyectojavawebss`;
+DROP procedure IF EXISTS `inscribirMateria`;
+
+USE `proyectojavawebss`;
+DROP procedure IF EXISTS `proyectojavawebss`.`inscribirMateria`;
+;
+
+DELIMITER $$
+USE `proyectojavawebss`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `inscribirMateria`(
+IN `pidGrupoInscrito` int,
+IN `pidAlumnoInscrito` int 
+)
+BEGIN
+IF (SELECT EXISTS(SELECT * FROM materiasinscritas 
+		WHERE idAlumnoInscrito = pidAlumnoInscrito AND idGrupoInscrito = pidGrupoInscrito)=0)
+THEN
+	INSERT INTO `proyectojavawebss`.`materiasinscritas`
+	(`idGrupoInscrito`,
+	`idAlumnoInscrito`)
+	VALUES
+	(pidGrupoInscrito,pidAlumnoInscrito);
+END IF;
+
+
+
+END$$
+
+DELIMITER ;
+;
+
+
+     
+     */
     public static int inscribirMateria(int idGrupo, int matricula) throws SQLException{
         Connection con = null;
         try {
             con=DbConnection.getConnection();
-            String sql="Call inscribirMateria(?,?)";
+            String sql="Call getMateriaInscritaExists(?,?)";
             CallableStatement statement=con.prepareCall(sql);
             statement.setInt(1, idGrupo);
             statement.setInt(2, matricula);
-            return statement.executeUpdate();
+            ResultSet resultSet=statement.executeQuery();
+            if (resultSet.next()) {
+                return -1;
+            }
+            else{
+                sql="Call inscribirMateria(?,?)";
+                statement=con.prepareCall(sql);
+                statement.setInt(1, idGrupo);
+                statement.setInt(2, matricula);
+                return statement.executeUpdate();
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(grupoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -350,6 +395,65 @@ DELIMITER ;
             con.close();
         }
         return 0;
+    }
+    
+    
+    /**
+    USE `proyectojavawebss`;
+    DROP procedure IF EXISTS `getMateriasByAlumno`;
+
+    USE `proyectojavawebss`;
+    DROP procedure IF EXISTS `proyectojavawebss`.`getMateriasByAlumno`;
+    ;
+
+    DELIMITER $$
+    USE `proyectojavawebss`$$
+    CREATE DEFINER=`root`@`localhost` PROCEDURE `getMateriasByAlumno`(
+    IN `pmatricula` int
+    )
+    BEGIN
+
+    select idGrupo, m.claveMateria, nombreMateria, 
+    g.estatus as 'estatus grupo' from `proyectojavawebss`.grupo g
+    join `proyectojavawebss`.materiasinscritas mi on mi.idGrupoInscrito=g.idGrupo
+    join `proyectojavawebss`.materia m on m.claveMateria=g.claveMateriaGrupo
+    where mi.idAlumnoInscrito=pmatricula;
+
+
+    END$$
+
+    DELIMITER ;
+    ;
+
+     
+     */
+    
+    public static List<Grupo> getMateriasByAlumno(int pmatricula) throws SQLException{
+        List<Grupo> listaGrupos =new ArrayList<>();
+        Connection con = null;
+        try {
+            con=DbConnection.getConnection();
+            String sql="Call getMateriasByAlumno(?)";
+            CallableStatement statement=con.prepareCall(sql);
+            statement.setInt(1, pmatricula);
+            ResultSet resultSet=statement.executeQuery();
+            while(resultSet.next()){
+                int idGrupo=resultSet.getInt("idGrupo");
+                int claveMateria=resultSet.getInt("claveMateria");
+                String nombreMateria=resultSet.getString("nombreMateria");
+                Boolean estatusGrupo=resultSet.getBoolean("estatus grupo");
+                Materia materia=MateriaDAO.getMateriaByID(claveMateria);
+                listaGrupos.add(new Grupo(idGrupo,estatusGrupo,materia));
+            }
+            return listaGrupos;
+        } catch (SQLException ex) {
+            Logger.getLogger(grupoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally{
+            con.close();
+        }
+            
+        return listaGrupos;
     }
     
     

@@ -495,7 +495,7 @@ $(document).ready(function() {
                         Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: 'Error intenta más tarde'
+                                text: `${obj.msj}`
                         });
                     }
                 },
@@ -579,6 +579,108 @@ $(document).ready(function() {
             currow.find('td:eq(-1)').css( "color", "pink" );*/
             debugger;
         })
+    
+    
+    
+    
+        $('#tbodyidMateriasAlumno').on('click',"#DarBajaMateria",function(){
+            let currow=$(this).closest('tr');
+            let idgrupo=currow.find('th').text();
+            debugger;
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "¿Está seguro de eliminar este registro?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type:"POST",
+                        datatype:"json",
+                        url:"darBajaMateriaController",
+                        data:{
+                            "idgrupo":idgrupo
+                        },
+                        success:(data,textStatus,jqXHR)=>{
+                            let obj=JSON.parse(data);
+                            debugger;
+                            if (obj.status==200) {                            
+                                Swal.fire({
+                                   position: 'center',
+                                   icon: 'success',
+                                   title: `${obj.msj}`,
+                                   showConfirmButton: false,
+                                   timer: 1000
+                                 });
+                                 $('#tbodyidMateriasAlumno').html(obj.listaGrupos)
+                            }
+                            else{
+                                Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: 'Error intenta más tarde'
+                                });
+                            }
+                        },
+                        error:(error)=>{
+                            debugger;
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error...',
+                                text: 'Error inesperado: '+error.toString(),
+                              })
+                        }
+                    });
+                }
+              })
+        });
+    
+    //traer solo las materias que el alumno no tenga inscritas
+        $('#tbodyidgrupos').on('click',"#InscribirMateria",function(){
+            let currow=$(this).closest('tr');
+            let idgrupo=currow.find('th').text();
+            debugger;
+            $.ajax({
+                type:"POST",
+                datatype:"json",
+                url:"InsrcibirMateriaController",
+                data:{
+                    "idgrupo":idgrupo
+                },
+                success:(data,textStatus,jqXHR)=>{
+                    let obj=JSON.parse(data);
+                    debugger;
+                    if (obj.status==200) {
+                        $('#tbodyidMateriasAlumno').html(obj.listaGrupos)
+                        Swal.fire({
+                           position: 'center',
+                           icon: 'success',
+                           title: `${obj.msj}`,
+                           showConfirmButton: false,
+                           timer: 1000
+                         });
+                    }
+                    else{
+                        Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: `${obj.msj}`
+                        });
+                    }
+                },
+                error:(error)=>{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error...',
+                        text: 'Error inesperado: '+error.toString(),
+                      })
+                }
+            });
+        });
+    
     /*MATERIAS*/
     
     /*MAESTRO*/
@@ -609,7 +711,8 @@ $(document).ready(function() {
                         success:(data,textStatus,jqXHR)=>{
                             let obj=JSON.parse(data);
                             debugger;
-                            if (obj.status==200) {                            
+                            if (obj.status==200) {   
+                                 $('#tbodyidMaestros').html(obj.listaMaestros);
                                 Swal.fire({
                                    position: 'center',
                                    icon: 'success',
@@ -617,7 +720,7 @@ $(document).ready(function() {
                                    showConfirmButton: false,
                                    timer: 1000
                                  });
-                                 $('#tbodyidMaestros').html(obj.listaMaestros)
+                                
                             }
                             else{
                                 Swal.fire({
@@ -1279,6 +1382,7 @@ $(document).ready(function() {
         });
     
     /*GRUPO*/
+    
     
 });
 

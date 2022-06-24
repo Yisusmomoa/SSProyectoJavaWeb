@@ -5,6 +5,7 @@
 package controller;
 
 import dao.MateriaDAO;
+import dao.grupoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -17,6 +18,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import models.Grupo;
 import models.Materia;
 
 /**
@@ -56,12 +59,20 @@ public class paginaPrincipalControllerAlumno extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Materia> listaMaterias=new ArrayList<>();
+        List<Grupo> listaGrupos = new ArrayList<>();
+        List<Grupo> listaGruposAlumno=new ArrayList<>();
+        HttpSession session=request.getSession();
+        Object matricula=session.getAttribute("matricula");
         try {
             listaMaterias=MateriaDAO.getMaterias();
+            listaGrupos=grupoDAO.getGrupos();
+            listaGruposAlumno=grupoDAO.getMateriasByAlumno((int)matricula);
         } catch (SQLException ex) {
             Logger.getLogger(paginaPrincipalControllerAlumno.class.getName()).log(Level.SEVERE, null, ex);
         }
         request.setAttribute("listaMaterias", listaMaterias);
+        request.setAttribute("listaGrupos", listaGrupos);
+        request.setAttribute("listaGruposAlumno", listaGruposAlumno);
         request.getRequestDispatcher("PaginaPrincipalAlumno.jsp").forward(request, response);
     }
 

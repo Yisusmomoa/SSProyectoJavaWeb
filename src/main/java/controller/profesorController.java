@@ -116,8 +116,8 @@ public class profesorController extends HttpServlet {
 
                                         Tabla=Tabla.concat("</tr>");
                                     }
-                                    Tabla=Tabla.concat("</tbody>");
-                                    Tabla=Tabla.concat("</table>");
+                                    /*Tabla=Tabla.concat("</tbody>");
+                                    Tabla=Tabla.concat("</table>");*/
                                     json.put("listaMaestros", Tabla);
 
                                 out.println(json);
@@ -179,8 +179,8 @@ public class profesorController extends HttpServlet {
 
                                         Tabla=Tabla.concat("</tr>");
                                     }
-                                    Tabla=Tabla.concat("</tbody>");
-                                    Tabla=Tabla.concat("</table>");
+                                    /*Tabla=Tabla.concat("</tbody>");
+                                    Tabla=Tabla.concat("</table>");*/
                                     json.put("listaMaestros", Tabla);
                                     out.println(json);
                                 }

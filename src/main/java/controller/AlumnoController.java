@@ -117,8 +117,8 @@ public class AlumnoController extends HttpServlet {
 
                                     Tabla=Tabla.concat("</tr>");
                                 }
-                                Tabla=Tabla.concat("</tbody>");
-                                Tabla=Tabla.concat("</table>");
+                                /*Tabla=Tabla.concat("</tbody>");
+                                Tabla=Tabla.concat("</table>");*/
                                 json.put("listaAlumnos", Tabla);
 
                             out.println(json);

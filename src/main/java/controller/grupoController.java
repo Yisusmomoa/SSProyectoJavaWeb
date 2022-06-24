@@ -122,8 +122,8 @@ public class grupoController extends HttpServlet {
 
                                     Tabla=Tabla.concat("</tr>");
                                 }
-                                Tabla=Tabla.concat("</tbody>");
-                                Tabla=Tabla.concat("</table>");
+                                /*Tabla=Tabla.concat("</tbody>");
+                                Tabla=Tabla.concat("</table>");*/
                                 json.put("listaGrupos", Tabla);
 
                             out.println(json);
@@ -209,8 +209,8 @@ public class grupoController extends HttpServlet {
 
                                     Tabla=Tabla.concat("</tr>");
                                 }
-                                Tabla=Tabla.concat("</tbody>");
-                                Tabla=Tabla.concat("</table>");
+                                /*Tabla=Tabla.concat("</tbody>");
+                                Tabla=Tabla.concat("</table>");*/
                                 json.put("listaGrupos", Tabla);
 
 
