@@ -20,6 +20,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.Alumno;
 import models.Grupo;
 import models.Maestro;
@@ -61,23 +62,42 @@ public class paginaPrincipalControllerAdministrador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Maestro> listaMaestros=new ArrayList<>();
-        List<Alumno> listaAlumnos=new ArrayList<>();
-        List<Materia> listaMaterias=new ArrayList<>();
-        List<Grupo> listaGrupos=new ArrayList<>();
-        try {
-            listaMaestros=maestroDAO.getMaestros();
-            listaAlumnos=AlumnoDAO.getAlumnos();
-            listaMaterias=MateriaDAO.getMaterias();
-            listaGrupos=grupoDAO.getGrupos();
-        } catch (SQLException ex) {
-            Logger.getLogger(paginaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+        HttpSession session = request.getSession();
+        if (session.getAttribute("noEmpleado")!=null){
+            List<Maestro> listaMaestros=new ArrayList<>();
+            List<Alumno> listaAlumnos=new ArrayList<>();
+            List<Materia> listaMaterias=new ArrayList<>();
+            List<Grupo> listaGrupos=new ArrayList<>();
+            try {
+                listaMaestros=maestroDAO.getMaestros();
+                listaAlumnos=AlumnoDAO.getAlumnos();
+                listaMaterias=MateriaDAO.getMaterias();
+                listaGrupos=grupoDAO.getGrupos();
+            } catch (SQLException ex) {
+                Logger.getLogger(paginaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("listaMaestros", listaMaestros);
+            request.setAttribute("listaAlumnos", listaAlumnos);
+            request.setAttribute("listaMaterias", listaMaterias);
+            request.setAttribute("listaGrupos", listaGrupos);
+            request.getRequestDispatcher("PaginaPrincipalAdmin.jsp").forward(request, response);
         }
-        request.setAttribute("listaMaestros", listaMaestros);
-        request.setAttribute("listaAlumnos", listaAlumnos);
-        request.setAttribute("listaMaterias", listaMaterias);
-        request.setAttribute("listaGrupos", listaGrupos);
-        request.getRequestDispatcher("PaginaPrincipalAdmin.jsp").forward(request, response);
+        else{
+            response.setContentType("text/html;charset=UTF-8");
+            try ( PrintWriter out = response.getWriter()) {
+                /* TODO output your page here. You may use following sample code. */
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>botate alv .l.</title>");            
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1>Botate alv .l." + request.getContextPath() + "</h1>");
+                out.println("</body>");
+                out.println("</html>");
+            }
+        }
+        
     }
 
     

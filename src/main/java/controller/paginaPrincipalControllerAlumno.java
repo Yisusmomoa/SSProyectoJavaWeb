@@ -58,22 +58,41 @@ public class paginaPrincipalControllerAlumno extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Materia> listaMaterias=new ArrayList<>();
-        List<Grupo> listaGrupos = new ArrayList<>();
-        List<Grupo> listaGruposAlumno=new ArrayList<>();
         HttpSession session=request.getSession();
-        Object matricula=session.getAttribute("matricula");
-        try {
-            listaMaterias=MateriaDAO.getMaterias();
-            listaGrupos=grupoDAO.getGrupos();
-            listaGruposAlumno=grupoDAO.getMateriasByAlumno((int)matricula);
-        } catch (SQLException ex) {
-            Logger.getLogger(paginaPrincipalControllerAlumno.class.getName()).log(Level.SEVERE, null, ex);
+        if (session.getAttribute("matricula")!=null) {
+            List<Materia> listaMaterias=new ArrayList<>();
+            List<Grupo> listaGrupos = new ArrayList<>();
+            List<Grupo> listaGruposAlumno=new ArrayList<>();
+
+            Object matricula=session.getAttribute("matricula");
+            try {
+                listaMaterias=MateriaDAO.getMaterias();
+                listaGrupos=grupoDAO.getGrupos();
+                listaGruposAlumno=grupoDAO.getMateriasByAlumno((int)matricula);
+            } catch (SQLException ex) {
+                Logger.getLogger(paginaPrincipalControllerAlumno.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("listaMaterias", listaMaterias);
+            request.setAttribute("listaGrupos", listaGrupos);
+            request.setAttribute("listaGruposAlumno", listaGruposAlumno);
+            request.getRequestDispatcher("PaginaPrincipalAlumno.jsp").forward(request, response);
         }
-        request.setAttribute("listaMaterias", listaMaterias);
-        request.setAttribute("listaGrupos", listaGrupos);
-        request.setAttribute("listaGruposAlumno", listaGruposAlumno);
-        request.getRequestDispatcher("PaginaPrincipalAlumno.jsp").forward(request, response);
+        else{
+            response.setContentType("text/html;charset=UTF-8");
+            try ( PrintWriter out = response.getWriter()) {
+                /* TODO output your page here. You may use following sample code. */
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Servlet paginaPrincipalControllerAlumno</title>");            
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1>botate alv alumno pendejo " + request.getContextPath() + "</h1>");
+                out.println("</body>");
+                out.println("</html>");
+            }
+        }
+        
     }
 
     

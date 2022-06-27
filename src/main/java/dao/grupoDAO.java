@@ -118,20 +118,29 @@ DELIMITER ;
      USE `proyectojavawebss`;
 DROP procedure IF EXISTS `getBusquedaGrupos`;
 
+USE `proyectojavawebss`;
+DROP procedure IF EXISTS `proyectojavawebss`.`getBusquedaGrupos`;
+;
+
 DELIMITER $$
 USE `proyectojavawebss`$$
-CREATE PROCEDURE `getBusquedaGrupos` (
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getBusquedaGrupos`(
 IN `pclaveMateriaGrupo` int
 )
 BEGIN
 SELECT `grupo`.`idGrupo`,
     `grupo`.`claveMateriaGrupo`,
-    `grupo`.`numAlumnos`
+    `grupo`.`numAlumnos`,
+    `grupo`.`estatus`
 FROM `proyectojavawebss`.`grupo`;
+
 
 END$$
 
 DELIMITER ;
+;
+
+
 
 
      */
@@ -149,8 +158,10 @@ DELIMITER ;
                 int idGrupo=resultSet.getInt("idGrupo");
                 int claveMateriaGrupo=resultSet.getInt("claveMateriaGrupo");
                 int numAlumnos=resultSet.getInt("numAlumnos");
+                Boolean estatus=resultSet.getBoolean("estatus");
                 Materia materia=MateriaDAO.getMateriaByID(claveMateriaGrupo);
-                listaGrupos.add(new Grupo(idGrupo,numAlumnos,materia));
+                listaGrupos.add(new Grupo(idGrupo,claveMateriaGrupo,numAlumnos,
+                estatus,materia));
             }
         } catch (SQLException ex) {
             Logger.getLogger(grupoDAO.class.getName()).log(Level.SEVERE, null, ex);

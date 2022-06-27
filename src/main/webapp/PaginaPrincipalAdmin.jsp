@@ -213,8 +213,8 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
                               <option selected value="null">Selecciona una opción</option>
                               <option value="1">Maestro</option>
                               <option value="2">Alumno</option>
-                              <option value="3">Materia</option>
                               <option value="3">Grupo</option>
+                              <option value="4">Materia</option>
                             </select>
                             <label for="floatingSelect">Works with selects</label>
                           </div>

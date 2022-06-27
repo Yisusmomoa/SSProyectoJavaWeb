@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.Grupo;
 import models.Materia;
 
@@ -57,17 +58,36 @@ public class paginaPrincipalControllerMaestro extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Grupo> listaGrupos=new ArrayList<>();
-        List<Materia> listaMaterias=new ArrayList<>();
-        try {
-            listaGrupos=grupoDAO.getGrupos();
-            listaMaterias=MateriaDAO.getMaterias();
-        } catch (SQLException ex) {
-            Logger.getLogger(paginaPrincipalControllerMaestro.class.getName()).log(Level.SEVERE, null, ex);
+        HttpSession session = request.getSession();
+        if (session.getAttribute("noEmpleado")!=null) {
+            List<Grupo> listaGrupos=new ArrayList<>();
+            List<Materia> listaMaterias=new ArrayList<>();
+            try {
+                listaGrupos=grupoDAO.getGrupos();
+                listaMaterias=MateriaDAO.getMaterias();
+            } catch (SQLException ex) {
+                Logger.getLogger(paginaPrincipalControllerMaestro.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("listaGrupos", listaGrupos);
+            request.setAttribute("listaMaterias", listaMaterias);
+            request.getRequestDispatcher("PaginaPrincipalMaestro.jsp").forward(request, response);
         }
-        request.setAttribute("listaGrupos", listaGrupos);
-        request.setAttribute("listaMaterias", listaMaterias);
-        request.getRequestDispatcher("PaginaPrincipalMaestro.jsp").forward(request, response);
+        else{
+            response.setContentType("text/html;charset=UTF-8");
+            try ( PrintWriter out = response.getWriter()) {
+                /* TODO output your page here. You may use following sample code. */
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Servlet paginaPrincipalControllerMaestro</title>");            
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1>Botate alv maistro " + request.getContextPath() + "</h1>");
+                out.println("</body>");
+                out.println("</html>");
+            }
+        }
+            
     }
 
     

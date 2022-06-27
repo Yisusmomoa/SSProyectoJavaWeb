@@ -44,16 +44,22 @@ List<Grupo> listaGrupos=(List<Grupo>)request.getAttribute("listaGrupos");
             <th scope="col" id="acciones">acciones</th>
           </tr>
         </thead>
-        <tbody id="tbodyid">
+        <tbody id="tbodyidMateriasMaestro">
             <% for(Materia materia : listaMaterias){%>
           <tr>
             <th scope="row"><%= materia.getClaveMateria() %></th>
             <td><%= materia.getNombreMateria() %></td>
             <td><%= materia.isEstatus() %></td>
             <td class="text-center align-middle">
-                <a href="" class="btn btn-danger">Eliminar</a>
-                <a href="" class="btn btn-secondary">Editar</a>
-            </td>
+                <button type="button"
+                        value="Eliminar"
+                        id="EliminarMateria" 
+                        class="btn btn-danger">Eliminar</button>
+                <button type="button" id="EditarMateria"
+                        value="EditarGetInfoMateria"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#EditMateria"
+                        class="btn btn-secondary">Editar</button>            </td>
           </tr>
           <%}%>
         </tbody>
@@ -72,23 +78,34 @@ List<Grupo> listaGrupos=(List<Grupo>)request.getAttribute("listaGrupos");
         <thead>
           <tr>
             <th scope="col">id</th>
-            <th scope="col">nombre</th>
+            <th scope="col">nombre materia</th>
             <th scope="col">Numero alumnos</th>
+            <th scope="col">Clave materia</th>
+            <th scope="col">Estatus</th>
             <th scope="col" id="acciones">acciones</th>
           </tr>
         </thead>
-        <tbody id="tbodyid">
-            <% for(Grupo grupo : listaGrupos){%>
-            <tr>
-              <th scope="row"><%= grupo.getIdGrupo() %></th>
-              <td><%= grupo.getMateria().getNombreMateria() %></td>
-              <td><%= grupo.getNumAlumnos() %></td>
-              <td class="text-center align-middle">
-                  <a href="" class="btn btn-danger">Eliminar</a>
-                  <a href="" class="btn btn-secondary">Editar</a>
-              </td>
-            </tr>
-          <%}%>
+        <tbody id="tbodyidGruposMaestro">
+            <%for(Grupo grupo: listaGrupos){%>
+                <tr>
+                  <th scope="row"><%= grupo.getIdGrupo() %></th>
+                  <td><%= grupo.getMateria().getNombreMateria() %></td>
+                  <td><%= grupo.getNumAlumnos() %></td>
+                  <td><%= grupo.getMateria().getClaveMateria() %></td>
+                  <td><%= grupo.isEstatus() %></td>
+                  <td class="text-center align-middle">
+                      <button type="submit"
+                                    value="Eliminar"
+                                    id="EliminarGrupo" 
+                                    class="btn btn-danger">Eliminar</button>
+                      <button type="button" id="EditarGrupo"
+                              value="EditarGetInfoGrupo"
+                              data-bs-toggle="modal" 
+                              data-bs-target="#EditGrupo"
+                              class="btn btn-secondary">Editar</button>
+                  </td>
+                </tr>
+            <%}%>
         </tbody>
       </table>
     </div>

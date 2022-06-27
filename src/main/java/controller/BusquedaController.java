@@ -88,6 +88,7 @@ public class BusquedaController extends HttpServlet {
                 try {
                     listaMaestros=maestroDAO.getBusquedaMaestro(inputBusqueda);
                     request.setAttribute("listaMaestros",listaMaestros); //?
+                    request.getRequestDispatcher("BusquedaMaestros.jsp").forward(request, response);
                     /*json.put("lista", listaMaestros);
                     json.put("status", 200);
                     out.println(json);*/
@@ -100,6 +101,7 @@ public class BusquedaController extends HttpServlet {
                 try {
                     listaAlumnos=AlumnoDAO.getBusquedaAlumno(inputBusqueda);
                     request.setAttribute("listaAlumnos",listaAlumnos); //?
+                    request.getRequestDispatcher("BusquedaAlumnos.jsp").forward(request, response);
                 } catch (SQLException ex) {
                     Logger.getLogger(BusquedaController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -111,10 +113,16 @@ public class BusquedaController extends HttpServlet {
             case "3":{
                 try {
                     listaGrupos=grupoDAO.getBusquedaGrupos(inputBusqueda);
+                    request.setAttribute("listaGrupos",listaGrupos); //?
+                    
+                    listaMaterias=MateriaDAO.getMaterias();
+                    request.setAttribute("listaMaterias", listaMaterias);
+                    
+                    request.getRequestDispatcher("BusquedaGrupos.jsp").forward(request, response);
                 } catch (SQLException ex) {
                     Logger.getLogger(BusquedaController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                request.setAttribute("listaGrupos",listaGrupos); //?
+                
                 /*json.put("lista", listaGrupos);
                 json.put("status", 200);
                 out.println(json);*/
@@ -124,6 +132,7 @@ public class BusquedaController extends HttpServlet {
                 try {
                     listaMaterias=MateriaDAO.getBusquedaMateria(inputBusqueda);
                     request.setAttribute("listaMaterias",listaMaterias); //?
+                    request.getRequestDispatcher("BusquedaMaterias.jsp").forward(request, response);
                 } catch (SQLException ex) {
                     Logger.getLogger(BusquedaController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -138,7 +147,7 @@ public class BusquedaController extends HttpServlet {
                     out.println(json); 
             }
         }
-        request.getRequestDispatcher("Busqueda.jsp").forward(request, response);
+        
         
     }
 

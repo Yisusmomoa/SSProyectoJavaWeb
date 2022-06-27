@@ -195,27 +195,31 @@ DELIMITER ;
         return 0;
     }
     
-    /** USE `proyectojavawebss`;
-    DROP procedure IF EXISTS `getBusquedaAlumno`;
+    /** 
+     * USE `proyectojavawebss`;
+DROP procedure IF EXISTS `getBusquedaAlumno`;
 
-    DELIMITER $$
-    USE `proyectojavawebss`$$
-    CREATE PROCEDURE `getBusquedaAlumno` (
-    IN `pnombre` varchar(255)
-    )
-    BEGIN
-    SELECT `alumno`.`matricula`,
-        `alumno`.`usuario`,
-        `alumno`.`nombre`,
-        `alumno`.`contraseña`,
-        `alumno`.`estatus`
-    FROM `proyectojavawebss`.`alumno`
-    WHERE nombreMaestro LIKE CONCAT('%',pnombre,'%');
+USE `proyectojavawebss`;
+DROP procedure IF EXISTS `proyectojavawebss`.`getBusquedaAlumno`;
+;
 
-    END$$
+DELIMITER $$
+USE `proyectojavawebss`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getBusquedaAlumno`(
+IN `pnombre` varchar(255)
+)
+BEGIN
+SELECT `alumno`.`matricula`,
+    `alumno`.`usuario`,
+    `alumno`.`nombre`,
+    `alumno`.`contraseña`,
+    `alumno`.`estatus`
+FROM `proyectojavawebss`.`alumno`
+WHERE usuario LIKE CONCAT('%',pnombre,'%');
 
-    DELIMITER ;
+END$$
 
+DELIMITER ;
 
      */
     
