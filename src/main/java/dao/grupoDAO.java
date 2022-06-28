@@ -115,7 +115,7 @@ DELIMITER ;
     }
     
     /**
-     USE `proyectojavawebss`;
+    USE `proyectojavawebss`;
 DROP procedure IF EXISTS `getBusquedaGrupos`;
 
 USE `proyectojavawebss`;
@@ -125,23 +125,20 @@ DROP procedure IF EXISTS `proyectojavawebss`.`getBusquedaGrupos`;
 DELIMITER $$
 USE `proyectojavawebss`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getBusquedaGrupos`(
-IN `pclaveMateriaGrupo` int
+IN `pidGrupo` int
 )
 BEGIN
 SELECT `grupo`.`idGrupo`,
     `grupo`.`claveMateriaGrupo`,
     `grupo`.`numAlumnos`,
     `grupo`.`estatus`
-FROM `proyectojavawebss`.`grupo`;
+FROM `proyectojavawebss`.`grupo`
+WHERE pidGrupo=idGrupo;
 
 
 END$$
 
 DELIMITER ;
-;
-
-
-
 
      */
     

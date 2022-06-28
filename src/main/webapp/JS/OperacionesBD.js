@@ -410,17 +410,29 @@ $(document).ready(function() {
         }
     });
     
-    
+    $('#floatingSelect').on('change',function(){
+        if (this.value==3) {
+            $('#boxBusquedaTxt').addClass('d-none');
+            $('#boxBusquedaInt').removeClass('d-none');
+        }
+        else{
+            $('#boxBusquedaTxt').removeClass('d-none');
+            $('#boxBusquedaInt').addClass('d-none');
+        }
+        
+    });
+    //Ni lo uso xd
     $('#Busqueda').submit((event)=>{
         event.preventDefault();
         const inputBusqueda=$('#inputBusqueda').val();
+        const inputBusquedaGrupo=$('#inputBusquedaGrupo').val();
         const floatingSelect=$('#floatingSelect').val();
         debugger;
         if(inputBusqueda!="" && floatingSelect!="null"){
             $.ajax({
                 type:"POST",
                 datatype:"json",
-                url:"BusquedaController",
+                url:"",
                 data:{
                     "inputBusqueda":inputBusqueda,
                     "floatingSelect":floatingSelect
@@ -464,6 +476,75 @@ $(document).ready(function() {
               })
         }
     });
+    
+    $('#FiltrarNombreMaestrotxt').on('keyup',function(){
+       const search=this.value;
+       console.log(search);
+       $.ajax({
+            type:"POST",
+                datatype:"json",
+                url:"FiltrarNombreMaestro",
+                data:{
+                    "search":search
+                },
+                success:(data,textStatus,jqXHR)=>{
+                    debugger;
+                    let obj=JSON.parse(data);
+                    if (obj.status==200) {
+                        $('#tbodyidMaestros').html(obj.listaMaestros);
+                    }
+                    else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Error'
+                          });
+                    }
+                },
+                error:(error)=>{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error...',
+                        text: 'Error inesperado: '+error.toString(),
+                      })
+                }
+       });
+    });
+    
+    $('#FiltrarNombreAlumnotxt').on('keyup',function(){
+       const search=this.value;
+       console.log(search);
+       $.ajax({
+                type:"POST",
+                datatype:"json",
+                url:"FiltrarNombreAlumno",
+                data:{
+                    "search":search
+                },
+                success:(data,textStatus,jqXHR)=>{
+                    debugger;
+                    let obj=JSON.parse(data);
+                    if (obj.status==200) {
+                        $('#tbodyidAlumnos').html(obj.listaAlumnos);
+                    }
+                    else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Error'
+                          });
+                    }
+                },
+                error:(error)=>{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error...',
+                        text: 'Error inesperado: '+error.toString(),
+                      })
+                }
+       });
+    });
+    
     //Busqueda
     
     /*MATERIAS*/

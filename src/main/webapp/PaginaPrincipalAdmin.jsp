@@ -32,6 +32,26 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
 
    
         <h2 class="mt-5 pt-5">Catalogo maestros</h2>
+        
+        <div class="container-fluid" id="busquedaAjaxMaestro">
+                <div class="row justify-content-md-center">
+                  <div class="col-md-auto">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Filtrar nombre maestro</span>
+                        <input type="text" class="form-control" 
+                               placeholder="Nombre" id="FiltrarNombreMaestrotxt"
+                               aria-label="Username" aria-describedby="basic-addon1">
+                      </div>
+                  </div>
+                  <div class="col-md-auto ">
+                    <button type="button" class="btn btn-success "
+                    data-bs-toggle="modal" data-bs-target="#añadirMaestroModal"
+                    data-bs-whatever="@mdo"
+                    >Añadir maestro</button>
+                  </div>
+                </div>
+            </div>
+        
         <div class="container-fluid mt-2 
         my-custom-scrollbar">
           <table class="table table-striped 
@@ -72,6 +92,26 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
         </div>
 
         <h2 class="mt-5 pt-5">Catalogo alumnos</h2>
+        
+        <div class="container-fluid">
+                <div class="row justify-content-md-center">
+                  <div class="col-md-auto">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Filtrar usuario </span>
+                        <input type="text" class="form-control"
+                               id="FiltrarNombreAlumnotxt" placeholder="usuario" 
+                               aria-label="Username" aria-describedby="basic-addon1">
+                      </div>
+                  </div>
+                  <div class="col-md-auto ">
+                    <button type="button" class="btn btn-success "
+                    data-bs-toggle="modal" data-bs-target="#añadirAlumnoModal"
+                    data-bs-whatever="@mdo"
+                    >Añadir registro</button>
+                  </div>
+                </div>
+            </div>
+        
         <div class="container-fluid mt-2 mb-5 
             my-custom-scrollbar" id="divtableAlumnos">
             <table class="table table-striped 
@@ -204,20 +244,26 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Busqueda" id="inputBusqueda" name="inputBusqueda"
-                            aria-label="Username" aria-describedby="basic-addon1">
-                          </div>
-                          <div class="form-floating">
-                            <select class="form-select" id="floatingSelect" name="floatingSelect" aria-label="Floating label select example">
-                              <option selected value="null">Selecciona una opción</option>
-                              <option value="1">Maestro</option>
-                              <option value="2">Alumno</option>
-                              <option value="3">Grupo</option>
-                              <option value="4">Materia</option>
-                            </select>
-                            <label for="floatingSelect">Works with selects</label>
-                          </div>
+                            <div class="form-floating ">
+                                <select class="form-select" id="floatingSelect" name="floatingSelect" aria-label="Floating label select example">
+                                    <option selected value="null">Selecciona una opción</option>
+                                    <option value="1">Maestro</option>
+                                    <option value="2">Alumno</option>
+                                    <option value="3">Grupo</option>
+                                    <option value="4">Materia</option>
+                                </select>
+                                <label for="floatingSelect">Works with selects</label>
+                            </div>
+                            <div class="input-group mb-3 mt-3" id="boxBusquedaTxt">
+                                <input type="text" class="form-control" placeholder="Busqueda" 
+                                       id="inputBusqueda" name="inputBusqueda"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3 mt-3 d-none" id="boxBusquedaInt">
+                                <input type="number" id="inputBusquedaGrupo" class="form-control"
+                                       placeholder="idgrupo" name="inputBusquedaGrupo"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

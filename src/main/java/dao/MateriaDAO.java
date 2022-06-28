@@ -147,22 +147,25 @@ DELIMITER ;
      USE `proyectojavawebss`;
 DROP procedure IF EXISTS `getBusquedaMateria`;
 
+USE `proyectojavawebss`;
+DROP procedure IF EXISTS `proyectojavawebss`.`getBusquedaMateria`;
+;
+
 DELIMITER $$
 USE `proyectojavawebss`$$
-CREATE PROCEDURE `getBusquedaMateria` (
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getBusquedaMateria`(
 IN `pnombreMateria` varchar(255)
 )
 BEGIN
 SELECT `materia`.`claveMateria`,
     `materia`.`nombreMateria`,
     `materia`.`estatus`
-FROM `proyectojavawebss`.`materia`;
+FROM `proyectojavawebss`.`materia`
+WHERE nombreMateria LIKE CONCAT('%',pnombreMateria,'%');
 
 END$$
 
 DELIMITER ;
-
-
      
      */
     

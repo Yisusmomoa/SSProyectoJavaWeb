@@ -69,6 +69,7 @@ public class BusquedaController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String inputBusqueda=request.getParameter("inputBusqueda");
+        String inputBusquedaGrupo=request.getParameter("inputBusquedaGrupo");
         String floatingSelect=request.getParameter("floatingSelect");
         
         List<Maestro> listaMaestros=new ArrayList<>();
@@ -112,7 +113,7 @@ public class BusquedaController extends HttpServlet {
             }
             case "3":{
                 try {
-                    listaGrupos=grupoDAO.getBusquedaGrupos(inputBusqueda);
+                    listaGrupos=grupoDAO.getBusquedaGrupos(inputBusquedaGrupo);
                     request.setAttribute("listaGrupos",listaGrupos); //?
                     
                     listaMaterias=MateriaDAO.getMaterias();

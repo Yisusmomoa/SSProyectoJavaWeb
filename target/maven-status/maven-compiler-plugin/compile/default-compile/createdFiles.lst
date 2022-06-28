@@ -23,5 +23,7 @@ controller\addAlumno.class
 controller\logInController.class
 controller\altaGrupoController.class
 controller\grupoController.class
+controller\FiltrarNombreMaestro.class
 controller\profesorController.class
+controller\FiltrarNombreAlumno.class
 models\Materia.class

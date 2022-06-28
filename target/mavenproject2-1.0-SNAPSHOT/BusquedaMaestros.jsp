@@ -95,7 +95,7 @@ List<Maestro> listaMaestros= (List<Maestro>)request.getAttribute("listaMaestros"
         %>
         
         <!-- Modal busqueda-->
-        <div class="modal fade " id="exampleModal" tabindex="-1" 
+       <div class="modal fade " id="exampleModal" tabindex="-1" 
           aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog ">
                 <<form method="POST" action="BusquedaController">
@@ -105,20 +105,26 @@ List<Maestro> listaMaestros= (List<Maestro>)request.getAttribute("listaMaestros"
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Busqueda" id="inputBusqueda" name="inputBusqueda"
-                            aria-label="Username" aria-describedby="basic-addon1">
-                          </div>
-                          <div class="form-floating">
-                            <select class="form-select" id="floatingSelect" name="floatingSelect" aria-label="Floating label select example">
-                              <option selected value="null">Selecciona una opción</option>
-                              <option value="1">Maestro</option>
-                              <option value="2">Alumno</option>
-                              <option value="3">Materia</option>
-                              <option value="3">Grupo</option>
-                            </select>
-                            <label for="floatingSelect">Works with selects</label>
-                          </div>
+                            <div class="form-floating ">
+                                <select class="form-select" id="floatingSelect" name="floatingSelect" aria-label="Floating label select example">
+                                    <option selected value="null">Selecciona una opción</option>
+                                    <option value="1">Maestro</option>
+                                    <option value="2">Alumno</option>
+                                    <option value="3">Grupo</option>
+                                    <option value="4">Materia</option>
+                                </select>
+                                <label for="floatingSelect">Works with selects</label>
+                            </div>
+                            <div class="input-group mb-3 mt-3" id="boxBusquedaTxt">
+                                <input type="text" class="form-control" placeholder="Busqueda" 
+                                       id="inputBusqueda" name="inputBusqueda"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3 mt-3 d-none" id="boxBusquedaInt">
+                                <input type="number" id="inputBusquedaGrupo" class="form-control"
+                                       placeholder="idgrupo" name="inputBusquedaGrupo"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
