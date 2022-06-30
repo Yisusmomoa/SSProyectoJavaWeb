@@ -23,7 +23,16 @@ List<Maestro> listaMaestros= (List<Maestro>)request.getAttribute("listaMaestros"
         <title>Busqueda Maestros</title>
     </head>
     <body>
-        <jsp:include page="navBarAdmin.jsp" />
+         <%
+        if (session.getAttribute("noEmpleado")!=null) {%>
+            <jsp:include page="navBarAdmin.jsp" />
+        <%
+        }
+        else{%>
+            <jsp:include page="navBarAlumno.jsp" />
+        <%
+            }
+        %>
         
         <%
             if (listaMaestros.isEmpty()) {

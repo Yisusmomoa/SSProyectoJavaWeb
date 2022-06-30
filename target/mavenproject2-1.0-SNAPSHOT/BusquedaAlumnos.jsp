@@ -22,7 +22,17 @@ List<Alumno> listaAlumnos=(List<Alumno>)request.getAttribute("listaAlumnos");
         <title>Busqueda Alumnos</title>
     </head>
     <body>
-        <jsp:include page="navBarAdmin.jsp" />
+        
+        <%
+        if (session.getAttribute("noEmpleado")!=null) {%>
+            <jsp:include page="navBarAdmin.jsp" />
+        <%
+        }
+        else{%>
+            <jsp:include page="navBarAlumno.jsp" />
+        <%}%>
+        
+        
         <%
             if (listaAlumnos.isEmpty()){
         %>

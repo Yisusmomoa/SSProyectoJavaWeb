@@ -22,7 +22,17 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
         <title>Busqueda materias</title>
     </head>
     <body>
-       <jsp:include page="navBarAdmin.jsp" />
+        <%
+        if (session.getAttribute("noEmpleado")!=null) {%>
+            <jsp:include page="navBarAdmin.jsp" />
+        <%
+        }
+        else{%>
+            <jsp:include page="navBarAlumno.jsp" />
+        <%
+            }
+        %>
+       
        
        <%
         if (listaMaterias.isEmpty()){

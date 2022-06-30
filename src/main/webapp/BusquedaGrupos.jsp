@@ -24,7 +24,16 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
         <title>Busqueda Grupos</title>
     </head>
     <body>
-        <jsp:include page="navBarAdmin.jsp" />
+        <%
+        if (session.getAttribute("noEmpleado")!=null) {%>
+            <jsp:include page="navBarAdmin.jsp" />
+        <%
+        }
+        else{%>
+            <jsp:include page="navBarAlumno.jsp" />
+        <%
+            }
+        %>
         
         <%
             if(listaGrupos.isEmpty()){

@@ -511,7 +511,8 @@ $(document).ready(function() {
        });
     });
     
-    $('#FiltrarNombreAlumnotxt').on('keyup',function(){
+    //AJAX
+        $('#FiltrarNombreAlumnotxt').on('keyup',function(){
        const search=this.value;
        console.log(search);
        $.ajax({
@@ -544,6 +545,79 @@ $(document).ready(function() {
                 }
        });
     });
+    
+        $('#FiltrarMateriaAlumnotxt').on('keyup',function(){
+       const search=this.value;
+       debugger;
+       $.ajax({
+                type:"POST",
+                datatype:"json",
+                url:"FiltrarMateriasAlumno",
+                data:{
+                    "search":search
+                },
+                success:(data,textStatus,jqXHR)=>{
+                    debugger;
+                    let obj=JSON.parse(data);
+                    if (obj.status==200) {
+                        $('#tbodyidMateriasAlumno').html(obj.listaGrupos);
+                    }
+                    else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Error'
+                          });
+                    }
+                },
+                error:(error)=>{
+                    debugger;
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error...',
+                        text: 'Error inesperado: '+error.responseText,
+                      })
+                }
+       });
+    });
+    
+        $('#FiltrarGrupostxt').on('keyup',function(){
+            const search=this.value;
+            debugger;
+            $.ajax({
+                type:"POST",
+                datatype:"json",
+                url:"FiltrarIdGrupo",
+                data:{
+                    "search":search
+                },
+                success:(data,textStatus,jqXHR)=>{
+                    debugger;
+                    let obj=JSON.parse(data);
+                    if (obj.status==200) {
+                        $('#tbodyidgrupos').html(obj.listaGrupos);
+                    }
+                    else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Error'
+                          });
+                    }
+                },
+                error:(error)=>{
+                    debugger;
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error...',
+                        text: 'Error inesperado: '+error.responseText,
+                      })
+                }
+            });
+        });
+    
+        
+    //AJAX
     
     //Busqueda
     
@@ -589,12 +663,6 @@ $(document).ready(function() {
                 }
             });
 
-
-            /*currow.find('td:eq(0)').css( "color", "red" );
-            currow.find('td:eq(1)').css( "color", "blue" );
-            currow.find('td:eq(2)').css( "color", "yellow" );
-            currow.find('td:eq(-1)').css( "color", "pink" );*/
-            debugger;
         })
 
         //dar de baja materia

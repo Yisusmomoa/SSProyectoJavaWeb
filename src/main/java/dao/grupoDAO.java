@@ -168,6 +168,7 @@ DELIMITER ;
         }
         return listaGrupos;
     }
+    
     /**
      USE `proyectojavawebss`;
 DROP procedure IF EXISTS `inscribirMateria`;
@@ -203,6 +204,7 @@ DELIMITER ;
 
      
      */
+    
     public static int inscribirMateria(int idGrupo, int matricula) throws SQLException{
         Connection con = null;
         try {
@@ -461,6 +463,112 @@ DELIMITER ;
             con.close();
         }
             
+        return listaGrupos;
+    }
+    
+    
+    
+    /**
+  USE `proyectojavawebss`;
+DROP procedure IF EXISTS `getBusquedaGruposByNameMateria`;
+
+USE `proyectojavawebss`;
+DROP procedure IF EXISTS `proyectojavawebss`.`getBusquedaGruposByNameMateria`;
+;
+
+DELIMITER $$
+USE `proyectojavawebss`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getBusquedaGruposByNameMateria`(
+IN `pnombreMateria` varchar(255),
+IN `pidAlumnoInscrito` int
+)
+BEGIN
+SELECT idGrupo,
+    claveMateriaGrupo,
+    g.estatus as 'estatus grupo' ,
+    m.nombreMateria
+FROM `proyectojavawebss`.grupo g
+JOIN `proyectojavawebss`.materia m on m.claveMateria=g.claveMateriaGrupo
+JOIN `proyectojavawebss`.MateriasInscritas mi on mi.idGrupoInscrito=idGrupo
+WHERE m.nombreMateria LIKE CONCAT('%',pnombreMateria,'%') AND mi.idAlumnoInscrito=pidAlumnoInscrito;
+END$$
+
+DELIMITER ;
+;
+     */
+    
+    public static List<Grupo> getBusquedaGruposByNameMateria(String inputBusqueda,
+            int pidAlumnoInscrito) throws SQLException{
+        List<Grupo> listaGrupos=new ArrayList<>();
+        Connection con = null;
+        try {
+            con=DbConnection.getConnection();
+            String sql="Call getBusquedaGruposByNameMateria(?,?)";
+            CallableStatement statement=con.prepareCall(sql);
+            statement.setString(1, inputBusqueda);
+            statement.setInt(2, pidAlumnoInscrito);
+            ResultSet resultSet=statement.executeQuery();
+            while(resultSet.next()){
+                int idGrupo=resultSet.getInt("idGrupo");
+                int claveMateriaGrupo=resultSet.getInt("claveMateriaGrupo");
+                Boolean estatus=resultSet.getBoolean("estatus grupo");
+                Materia materia=MateriaDAO.getMateriaByID(claveMateriaGrupo);
+                listaGrupos.add(new Grupo(idGrupo,
+                estatus,materia));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(grupoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally{
+            con.close();
+        }
+        return listaGrupos;
+    }
+    
+    /**
+    USE `proyectojavawebss`;
+    DROP procedure IF EXISTS `getGruposByMateria`;
+
+    DELIMITER $$
+    USE `proyectojavawebss`$$
+    CREATE PROCEDURE `getGruposByMateria` (
+    IN `pnombreMateria` varchar(255)
+    )
+    BEGIN
+    SELECT idGrupo,
+        claveMateriaGrupo,
+        g.estatus as 'estatus grupo' ,
+        m.nombreMateria
+    FROM `proyectojavawebss`.grupo g
+    JOIN `proyectojavawebss`.materia m on m.claveMateria=g.claveMateriaGrupo
+    WHERE m.nombreMateria LIKE CONCAT('%',pnombreMateria,'%');
+    END$$
+
+    DELIMITER ;
+     */
+    public static List<Grupo> getGruposByMateria(String inputBusqueda) throws SQLException{
+        List<Grupo> listaGrupos=new ArrayList<>();
+        Connection con = null;
+        try {
+            con=DbConnection.getConnection();
+            String sql="Call getGruposByMateria(?)";
+            CallableStatement statement=con.prepareCall(sql);
+            statement.setString(1, inputBusqueda);
+            ResultSet resultSet=statement.executeQuery();
+            while(resultSet.next()){
+                int idGrupo=resultSet.getInt("idGrupo");
+                int claveMateriaGrupo=resultSet.getInt("claveMateriaGrupo");
+                Boolean estatus=resultSet.getBoolean("estatus grupo");
+                Materia materia=MateriaDAO.getMateriaByID(claveMateriaGrupo);
+                listaGrupos.add(new Grupo(idGrupo,
+                estatus,materia));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(grupoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally{
+            con.close();
+        }
         return listaGrupos;
     }
     
