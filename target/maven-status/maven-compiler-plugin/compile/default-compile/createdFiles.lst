@@ -15,11 +15,13 @@ dao\maestroDAO.class
 models\Alumno.class
 controller\BusquedaController.class
 controller\addMaestro.class
+controller\FiltrarIdGrupo.class
 controller\paginaPrincipalControllerAdministrador.class
 utilis\DbConnection.class
 dao\MateriaDAO.class
 models\Maestro.class
 controller\addAlumno.class
+controller\FiltrarMateriasAlumno.class
 controller\logInController.class
 controller\altaGrupoController.class
 controller\grupoController.class

@@ -7,6 +7,11 @@ package controller;
 import dao.maestroDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -54,6 +59,7 @@ public class addMaestro extends HttpServlet {
         
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
+         List<Maestro> listaMaestros=new ArrayList<>();
         if (session.getAttribute("noEmpleado")!=null) {
             String InputNombre=request.getParameter("InputNombre");
             String InputUsuario=request.getParameter("InputUsuario");
@@ -62,6 +68,40 @@ public class addMaestro extends HttpServlet {
             Maestro maestro=new Maestro(InputNombre,Inputcontraseña,
                     InputUsuario,tipoMaestro);
             if (maestroDAO.addMaestro(maestro)==1) {
+                String Tabla;
+                Tabla="";
+                try {
+                    listaMaestros=maestroDAO.getMaestros();
+                    for(Maestro maestroAux: listaMaestros){
+                        Tabla=Tabla.concat("<tr>");
+
+                           Tabla=Tabla.concat("<th scope='row'>");
+                            Tabla=Tabla.concat(Integer.toString(maestroAux.getNoEmpleado()));
+                           Tabla=Tabla.concat("</th>");
+
+                           Tabla=Tabla.concat("<td>");
+                            Tabla=Tabla.concat(maestroAux.getNombreMaestro());
+                           Tabla=Tabla.concat("</td>");
+
+                           Tabla=Tabla.concat("<td>");
+                            Tabla=Tabla.concat(maestroAux.getUsuario());
+                           Tabla=Tabla.concat("</td>");
+
+                           Tabla=Tabla.concat("<td>");
+                            Tabla=Tabla.concat(Boolean.toString(maestroAux.isEstatus()));
+                           Tabla=Tabla.concat("</td>");
+
+                           Tabla=Tabla.concat("<td class='text-center align-middle'>");
+                            Tabla=Tabla.concat("<button type='button' value='Eliminar' id='EliminarMaestro' class='btn btn-danger'>Eliminar</button>");
+                            Tabla=Tabla.concat("<button type='button' id='EditarMaestro' value='EditarGetInfo' data-bs-toggle='modal' data-bs-target='#editMaestro' class='btn btn-secondary'>Editar</button>");
+                           Tabla=Tabla.concat("</td>");
+
+                        Tabla=Tabla.concat("</tr>");
+                    }
+                    json.put("listaMaestros", Tabla);
+                } catch (SQLException ex) {
+                    Logger.getLogger(addMaestro.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 json.put("msj", "Maestro agregado con exito");
                 json.put("status", 200);
                 out.println(json);

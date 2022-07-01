@@ -13,6 +13,7 @@ C:\Users\bjls2\OneDrive\Documentos\NetBeansProjects\mavenproject2\src\main\java\
 C:\Users\bjls2\OneDrive\Documentos\NetBeansProjects\mavenproject2\src\main\java\controller\materiaController.java
 C:\Users\bjls2\OneDrive\Documentos\NetBeansProjects\mavenproject2\src\main\java\controller\addMateria.java
 C:\Users\bjls2\OneDrive\Documentos\NetBeansProjects\mavenproject2\src\main\java\controller\darBajaMateriaController.java
+C:\Users\bjls2\OneDrive\Documentos\NetBeansProjects\mavenproject2\src\main\java\controller\FiltrarIdGrupo.java
 C:\Users\bjls2\OneDrive\Documentos\NetBeansProjects\mavenproject2\src\main\java\controller\AlumnoController.java
 C:\Users\bjls2\OneDrive\Documentos\NetBeansProjects\mavenproject2\src\main\java\models\Materia.java
 C:\Users\bjls2\OneDrive\Documentos\NetBeansProjects\mavenproject2\src\main\java\controller\InsrcibirMateriaController.java
@@ -27,3 +28,4 @@ C:\Users\bjls2\OneDrive\Documentos\NetBeansProjects\mavenproject2\src\main\java\
 C:\Users\bjls2\OneDrive\Documentos\NetBeansProjects\mavenproject2\src\main\java\models\Alumno.java
 C:\Users\bjls2\OneDrive\Documentos\NetBeansProjects\mavenproject2\src\main\java\controller\paginaPrincipalControllerAlumno.java
 C:\Users\bjls2\OneDrive\Documentos\NetBeansProjects\mavenproject2\src\main\java\dao\MateriaDAO.java
+C:\Users\bjls2\OneDrive\Documentos\NetBeansProjects\mavenproject2\src\main\java\controller\FiltrarMateriasAlumno.java

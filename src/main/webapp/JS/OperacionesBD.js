@@ -87,6 +87,7 @@ $(document).ready(function() {
     const UnaLetraMinus = new RegExp("^(?=.*[a-z])");
     const UnSignoPuntuacion = new RegExp("^(?=.*[!@#$&*''<>&=])");
     const r = /[!@#$&*''<>&=]/i; 
+    
     $('#altaMaestro').submit((event)=>{
          event.preventDefault();
          const InputNombre=$('#InputNombre').val();
@@ -128,9 +129,117 @@ $(document).ready(function() {
                                                         icon: 'success',
                                                         title: `${obj.msj}`,
                                                         showConfirmButton: false,
-                                                        timer: 2000
+                                                        timer: 1000
                                                       });
-                                                      
+                                                    setTimeout(()=>{
+                                                          $("#AltaMaestroModal").modal('hide');  
+                                                      },1000);
+                                                      $('#tbodyidMaestros').html(obj.listaMaestros)
+                                                      $('#InputNombre').val('');
+                                                      $('#InputUsuario').val('');
+                                                      $('#Inputcontraseña').val('');
+                                                }
+                                                else{
+                                                    Swal.fire({
+                                                        position:'center',
+                                                        icon: 'error',
+                                                        title: 'Error...',
+                                                        text: `${obj.msj}`,
+                                                        showConfirmButton: false,
+                                                        timer: 1000
+                                                    });
+                                                }
+                                            },
+                                            error:(error)=>{
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Error...',
+                                                    text: 'Error inesperado: '+error.toString(),
+                                                  })
+                                            }
+                                    })                  
+                            }
+                            else{
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error...',
+                                    text: 'la contraseña debe de tener una letra en minuscula!',
+                                  })
+                            }
+                    }
+                    else{
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Error...',
+                        text: 'la contraseña debe de tener un numero!',
+                      })
+                    }
+                }
+                else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error...',
+                        text: 'la contraseña debe de tener una letra mayuscula!',
+                      })
+                }
+            }
+        }
+        else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Error...',
+                text: 'No puedes dejar campos vacios!',
+              })
+        }
+    });
+    
+    $('#altaMaestroModal').submit((event)=>{
+         event.preventDefault();
+         const InputNombre=$('#InputNombre').val();
+         const InputUsuario=$('#InputUsuario').val();
+         const Inputcontraseña=$('#Inputcontraseña').val();
+         const tipoMaestro=$('#tipoMaestro').val();
+         debugger;
+        if (InputNombre!="" && InputUsuario!=""
+                && Inputcontraseña!="" && tipoMaestro!="null") {
+            if (Inputcontraseña.length>8) {
+                Swal.fire({
+                icon: 'error',
+                title: 'Error...',
+                text: 'la contraseña debe de \n\
+                ser como maximo 8 caracteres!',
+              })
+            }
+            else{
+                //Abcd5
+                if (UnaLetraMayus.test(Inputcontraseña)) {
+                    if (UnNumero.test(Inputcontraseña)) {
+                           if (UnaLetraMinus.test(Inputcontraseña)) {
+                               
+                                       $.ajax({
+                                            type:"POST",
+                                            datatype:"json",
+                                            url:"addMaestro",
+                                            data:{
+                                                "InputNombre":InputNombre,
+                                                "InputUsuario":InputUsuario,
+                                                "Inputcontraseña":Inputcontraseña,
+                                                "tipoMaestro":tipoMaestro
+                                            },
+                                            success:(data,textStatus,jqXHR)=>{
+                                                let obj=JSON.parse(data);
+                                                if (obj.status==200) {
+                                                    Swal.fire({
+                                                        position: 'center',
+                                                        icon: 'success',
+                                                        title: `${obj.msj}`,
+                                                        showConfirmButton: false,
+                                                        timer: 1000
+                                                      });
+                                                      setTimeout(()=>{
+                                                            $("#editMaestro").modal('hide');  
+                                                        },1000);
+                                                        $('#tbodyidMaestros').html(obj.listaMaestros)
                                                       $('#InputNombre').val('');
                                                       $('#InputUsuario').val('');
                                                       $('#Inputcontraseña').val('');
@@ -1534,9 +1643,3 @@ $(document).ready(function() {
     
     
 });
-
-/*currow.find('td:eq(0)').css( "color", "red" );
-        currow.find('td:eq(1)').css( "color", "blue" );
-        currow.find('td:eq(2)').css( "color", "yellow" );
-        currow.find('td:eq(-1)').css( "color", "pink" );*/
-

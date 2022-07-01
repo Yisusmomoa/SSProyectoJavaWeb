@@ -45,9 +45,8 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
                   </div>
                   <div class="col-md-auto ">
                     <button type="button" class="btn btn-success "
-                    data-bs-toggle="modal" data-bs-target="#añadirMaestroModal"
-                    data-bs-whatever="@mdo"
-                    >Añadir maestro</button>
+                    data-bs-toggle="modal" data-bs-target="#AltaMaestroModal"
+                    data-bs-whatever="@mdo">Añadir maestro</button>
                   </div>
                 </div>
             </div>
@@ -234,45 +233,7 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
 
 
         <!-- Modal busqueda-->
-        <div class="modal fade " id="exampleModal" tabindex="-1" 
-          aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog ">
-                <<form method="POST" action="BusquedaController">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Ventana de busqueda</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-floating ">
-                                <select class="form-select" id="floatingSelect" name="floatingSelect" aria-label="Floating label select example">
-                                    <option selected value="null">Selecciona una opción</option>
-                                    <option value="1">Maestro</option>
-                                    <option value="2">Alumno</option>
-                                    <option value="3">Grupo</option>
-                                    <option value="4">Materia</option>
-                                </select>
-                                <label for="floatingSelect">Works with selects</label>
-                            </div>
-                            <div class="input-group mb-3 mt-3" id="boxBusquedaTxt">
-                                <input type="text" class="form-control" placeholder="Busqueda" 
-                                       id="inputBusqueda" name="inputBusqueda"
-                                aria-label="Username" aria-describedby="basic-addon1">
-                            </div>
-                            <div class="input-group mb-3 mt-3 d-none" id="boxBusquedaInt">
-                                <input type="number" id="inputBusquedaGrupo" class="form-control"
-                                       placeholder="idgrupo" name="inputBusquedaGrupo"
-                                aria-label="Username" aria-describedby="basic-addon1">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <jsp:include page="ModalBusqueda.jsp"/>
 
         
         <!-- Modal edit maestro-->
@@ -498,7 +459,61 @@ List<Materia> listaMaterias=(List<Materia>)request.getAttribute("listaMaterias")
             </form>
           </div>
         </div>
-          
+                            
+                            
+         <!-- Modal Add maestro-->
+         
+         <div class="modal fade" id="AltaMaestroModal"
+             tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <form id="altaMaestro">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Alta maestro</h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">                           
+                            <label for="inputUsuario" class="form-label">Usuario</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Usaurio" 
+                                   id="InputUsuario" name="inputBusqueda"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                            
+                            <label for="inputNombre" class="form-label">Nombre</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="nombre" 
+                                   id="InputNombre" name="inputBusqueda"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                            
+                            <label for="inputContraseña" class="form-label">Contraseña</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="contraseña" 
+                                   id="Inputcontraseña" name="inputBusqueda"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="mb-3 pb-3">
+                            <label for="exampleInputPassword1" class="form-label">Tipo maestro</label>
+                            <select class="form-select" id="tipoMaestro" aria-label="Default select example">
+                                <option  selected value="null">Selecciona una opcion</option>
+                                <option value="maestro">maestro1</option>
+                                <option value="maestro">maestro2</option>
+                                <option value="maestro">maestro3</option>
+                              </select>
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" id="AltaMaestro" value="AltaMaestro"
+                            class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+            </form>
+          </div>
+        </div>
+                       
         
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" 
         integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
