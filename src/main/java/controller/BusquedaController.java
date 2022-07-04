@@ -68,6 +68,10 @@ public class BusquedaController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        
+        
+        
         String inputBusqueda=request.getParameter("inputBusqueda");
         String inputBusquedaGrupo=request.getParameter("inputBusquedaGrupo");
         String floatingSelect=request.getParameter("floatingSelect");

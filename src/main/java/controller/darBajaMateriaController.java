@@ -63,11 +63,12 @@ public class darBajaMateriaController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
         List<Grupo> listaGrupos=new ArrayList<>();
-        if (session!=null) {
+        if (session.getAttribute("matricula")!=null) {
+            
             String idgrupo=request.getParameter("idgrupo");
             HttpSession sessionAlumno=request.getSession();
             Object matricula=sessionAlumno.getAttribute("matricula");
